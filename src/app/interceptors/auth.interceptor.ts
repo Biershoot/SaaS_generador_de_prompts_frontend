@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, filter, take, switchMap, tap } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getAccessToken();
+    const token = this.authService.getToken();
     let request = req;
 
     // Agregar token si existe
@@ -37,7 +37,7 @@ export class AuthInterceptor implements HttpInterceptor {
             this.isRefreshing = true;
             this.refreshSubject.next(null);
 
-            return this.authService.refresh().pipe(
+            return this.authService.refreshToken().pipe(
               switchMap((res: any) => {
                 this.isRefreshing = false;
                 this.refreshSubject.next(res.accessToken);
@@ -54,9 +54,8 @@ export class AuthInterceptor implements HttpInterceptor {
                 this.isRefreshing = false;
                 this.refreshSubject.next(null);
                 
-                // Limpiar autenticación y redirigir al login
-                this.authService.clearAuth();
-                this.router.navigate(['/login']);
+                                 // Limpiar autenticación y redirigir al login
+                 this.authService.clearAuth();
                 return throwError(() => refreshErr);
               })
             );

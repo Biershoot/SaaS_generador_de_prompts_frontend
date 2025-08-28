@@ -46,18 +46,18 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
 
         <mat-card-content>
           <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Nombre completo</mat-label>
-              <input matInput type="text" formControlName="name"
-                     placeholder="Tu nombre completo" required>
-              <mat-icon matSuffix>person</mat-icon>
-              <mat-error *ngIf="registerForm.get('name')?.hasError('required')">
-                El nombre es requerido
-              </mat-error>
-              <mat-error *ngIf="registerForm.get('name')?.hasError('minlength')">
-                Mínimo 2 caracteres
-              </mat-error>
-            </mat-form-field>
+                         <mat-form-field appearance="outline" class="full-width">
+               <mat-label>Nombre completo</mat-label>
+               <input matInput type="text" formControlName="fullName"
+                      placeholder="Tu nombre completo" required>
+               <mat-icon matSuffix>person</mat-icon>
+               <mat-error *ngIf="registerForm.get('fullName')?.hasError('required')">
+                 El nombre es requerido
+               </mat-error>
+               <mat-error *ngIf="registerForm.get('fullName')?.hasError('minlength')">
+                 Mínimo 2 caracteres
+               </mat-error>
+             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Correo electrónico</mat-label>
@@ -204,16 +204,16 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]]
-    }, { validators: passwordMatchValidator });
+             this.registerForm = this.fb.group({
+           fullName: ['', [Validators.required, Validators.minLength(2)]],
+           email: ['', [Validators.required, Validators.email]],
+           password: ['', [Validators.required, Validators.minLength(6)]],
+           confirmPassword: ['', [Validators.required]]
+         }, { validators: passwordMatchValidator });
 
     // Si ya está autenticado, redirigir
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -224,8 +224,8 @@ export class RegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    const { name, email, password } = this.registerForm.value;
-    const userData = { name, email, password };
+         const { fullName, email, password, confirmPassword } = this.registerForm.value;
+     const userData = { fullName, email, password, confirmPassword };
 
     this.authService.register(userData).subscribe({
       next: (response) => {
@@ -235,7 +235,7 @@ export class RegisterComponent implements OnInit {
           horizontalPosition: 'end',
           verticalPosition: 'top'
         });
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => {
         this.loading = false;

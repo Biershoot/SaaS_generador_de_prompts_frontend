@@ -63,7 +63,7 @@ import { Observable, map } from 'rxjs';
             <mat-menu #userMenu="matMenu">
               <div class="user-info">
                 <mat-icon>person</mat-icon>
-                <span>{{ (currentUser$ | async)?.name }}</span>
+                <span>{{ (currentUser$ | async)?.fullName }}</span>
               </div>
               <mat-divider></mat-divider>
               <button mat-menu-item routerLink="/profile">

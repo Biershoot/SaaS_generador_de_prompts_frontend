@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,8 +26,7 @@ export class DashboardComponent implements OnInit {
       },
       error: (err) => {
         console.error('Logout error:', err);
-        // Aún así limpiar y redirigir
-        this.authService.clearAuth();
+        // Aún así redirigir
         this.router.navigate(['/login']);
       }
     });

@@ -13,7 +13,8 @@ export class ConfigService {
       login: `${this.baseUrl}/auth/login`,
       register: `${this.baseUrl}/auth/register`,
       refresh: `${this.baseUrl}/auth/refresh`,
-      logout: `${this.baseUrl}/auth/logout`
+      logout: `${this.baseUrl}/auth/logout`,
+      validate: `${this.baseUrl}/auth/validate`
     };
   }
 

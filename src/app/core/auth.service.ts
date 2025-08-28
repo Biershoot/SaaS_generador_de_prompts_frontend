@@ -8,26 +8,28 @@ import { TokenService } from './token.service';
 import { ErrorHandlerService } from './error-handler.service';
 
 export interface User {
-  id: string;
-  email: string;
-  name: string;
+  username: string;
+  fullName: string;
+  role: string;
 }
 
 export interface LoginRequest {
-  email: string;
+  username: string; // El backend usa email como username
   password: string;
 }
 
 export interface RegisterRequest {
-  name: string;
+  fullName: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 export interface AuthResponse {
-  token: string;
-  refreshToken?: string;
-  user: User;
+  accessToken: string;
+  username: string;
+  fullName: string;
+  role: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -49,38 +51,57 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.config.authUrls.login, credentials)
-      .pipe(
-        tap(response => this.handleAuthResponse(response)),
-        catchError(err => {
-          this.errorHandler.handleError(err, 'Login');
-          throw err;
-        })
-      );
+    return this.http.post<AuthResponse>(this.config.authUrls.login, credentials, {
+      withCredentials: true // Importante para cookies
+    }).pipe(
+      tap(response => this.handleAuthResponse(response)),
+      catchError(err => {
+        this.errorHandler.handleError(err, 'Login');
+        throw err;
+      })
+    );
   }
 
   register(userData: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.config.authUrls.register, userData)
-      .pipe(
-        tap(response => this.handleAuthResponse(response)),
-        catchError(error => {
-          this.errorHandler.handleError(error, 'Registro');
-          throw error;
-        })
-      );
+    return this.http.post<AuthResponse>(this.config.authUrls.register, userData, {
+      withCredentials: true // Importante para cookies
+    }).pipe(
+      tap(response => this.handleAuthResponse(response)),
+      catchError(error => {
+        this.errorHandler.handleError(error, 'Registro');
+        throw error;
+      })
+    );
   }
 
-  logout(): void {
-    this.tokenService.clearTokens();
-    localStorage.removeItem('current_user');
+  logout(): Observable<any> {
+    return this.http.post(this.config.authUrls.logout, {}, {
+      withCredentials: true
+    }).pipe(
+      tap(() => {
+        this.clearAuth();
+      }),
+      catchError(() => {
+        // Aún así limpiar localmente si falla la llamada al backend
+        this.clearAuth();
+        return of({});
+      })
+    );
+  }
+
+  clearAuth(): void {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
     this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
-    return this.tokenService.getToken();
+    return localStorage.getItem('accessToken');
   }
+
+
 
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
@@ -90,51 +111,65 @@ export class AuthService {
     return this.isAuthenticatedSubject.value;
   }
 
-  refreshToken(): Observable<AuthResponse> {
-    const refreshToken = this.tokenService.getRefreshToken();
-    if (!refreshToken) {
-      this.logout();
-      return of({} as AuthResponse);
-    }
 
-    return this.http.post<AuthResponse>(this.config.authUrls.refresh, { refreshToken })
-      .pipe(
-        tap(response => this.handleAuthResponse(response)),
-        catchError(() => {
-          this.logout();
-          return of({} as AuthResponse);
-        })
-      );
+
+  refreshToken(): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(this.config.authUrls.refresh, {}, {
+      withCredentials: true // El refresh token está en la cookie
+    }).pipe(
+      tap(response => this.handleAuthResponse(response)),
+      catchError(() => {
+        this.clearAuth();
+        return of({} as AuthResponse);
+      })
+    );
   }
 
   private handleAuthResponse(response: AuthResponse): void {
-    this.tokenService.saveToken(response.token);
-    if (response.refreshToken) {
-      this.tokenService.saveRefreshToken(response.refreshToken);
-    }
-    localStorage.setItem('current_user', JSON.stringify(response.user));
-    this.currentUserSubject.next(response.user);
+    // Guardar access token en localStorage
+    localStorage.setItem('accessToken', response.accessToken);
+    
+    // Crear objeto user y guardarlo
+    const user: User = {
+      username: response.username,
+      fullName: response.fullName,
+      role: response.role
+    };
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    
+    this.currentUserSubject.next(user);
     this.isAuthenticatedSubject.next(true);
   }
 
   private checkInitialAuthState(): void {
-    const token = this.tokenService.getToken();
-    const userStr = localStorage.getItem('current_user');
+    const token = localStorage.getItem('accessToken');
+    const userStr = localStorage.getItem('currentUser');
 
-    if (token && this.tokenService.isTokenValid() && userStr) {
+    if (token && userStr) {
       try {
         const user = JSON.parse(userStr);
         this.currentUserSubject.next(user);
         this.isAuthenticatedSubject.next(true);
+        
+        // Intentar validar el token con el backend
+        this.validateToken().subscribe({
+          error: () => {
+            // Token inválido, intentar refresh
+            this.refreshToken().subscribe({
+              error: () => this.clearAuth()
+            });
+          }
+        });
       } catch (error) {
         console.error('Error parsing stored user:', error);
-        this.logout();
+        this.clearAuth();
       }
-    } else if (token && !this.tokenService.isTokenValid()) {
-      // Token expirado, intentar refrescar
-      this.refreshToken().subscribe({
-        error: () => this.logout()
-      });
     }
+  }
+
+  validateToken(): Observable<any> {
+    return this.http.get(`${this.config.authUrls.validate}`, {
+      withCredentials: true
+    });
   }
 }
