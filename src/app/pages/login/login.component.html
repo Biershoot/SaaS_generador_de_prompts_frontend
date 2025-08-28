@@ -1,0 +1,8 @@
+<div class="flex flex-col items-center justify-center min-h-screen">
+  <h2 class="text-xl font-bold">Login</h2>
+  <form (ngSubmit)="login()" class="flex flex-col space-y-4">
+    <input [(ngModel)]="username" name="username" placeholder="Username" class="border p-2 rounded" />
+    <input [(ngModel)]="password" name="password" type="password" placeholder="Password" class="border p-2 rounded" />
+    <button type="submit" class="bg-blue-600 text-white p-2 rounded">Login</button>
+  </form>
+</div>

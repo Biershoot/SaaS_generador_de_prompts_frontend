@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Dashboard</h1>
+    <div class="user-info">
+      <span>Bienvenido, {{ currentUser?.name || 'Usuario' }}</span>
+      <button (click)="logout()" class="logout-button">Cerrar Sesión</button>
+    </div>
+  </header>
+  
+  <main class="dashboard-content">
+    <div class="welcome-card">
+      <h2>¡Bienvenido al Generador de Prompts!</h2>
+      <p>Aquí puedes crear y gestionar tus prompts de IA.</p>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>Generar Prompts</h3>
+        <p>Crea prompts personalizados para diferentes modelos de IA</p>
+      </div>
+      
+      <div class="feature-card">
+        <h3>Historial</h3>
+        <p>Revisa todos los prompts que has generado</p>
+      </div>
+      
+      <div class="feature-card">
+        <h3>Favoritos</h3>
+        <p>Guarda tus prompts favoritos para uso futuro</p>
+      </div>
+    </div>
+  </main>
+</div>
