@@ -14,19 +14,22 @@
     </div>
     
     <div class="features-grid">
-      <div class="feature-card">
-        <h3>Generar Prompts</h3>
+      <div class="feature-card" (click)="navigateToGenerator()">
+        <h3>🤖 Generar Prompts</h3>
         <p>Crea prompts personalizados para diferentes modelos de IA</p>
+        <button class="feature-btn">Ir al Generador</button>
       </div>
       
-      <div class="feature-card">
-        <h3>Historial</h3>
+      <div class="feature-card" (click)="navigateToHistory()">
+        <h3>📚 Historial</h3>
         <p>Revisa todos los prompts que has generado</p>
+        <button class="feature-btn">Ver Historial</button>
       </div>
       
-      <div class="feature-card">
-        <h3>Favoritos</h3>
+      <div class="feature-card" (click)="navigateToFavorites()">
+        <h3>⭐ Favoritos</h3>
         <p>Guarda tus prompts favoritos para uso futuro</p>
+        <button class="feature-btn">Ver Favoritos</button>
       </div>
     </div>
   </main>

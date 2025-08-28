@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -12,13 +13,35 @@ import { AuthService } from '../../services/auth.service';
 export class DashboardComponent implements OnInit {
   currentUser: any;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.currentUser = this.authService.getCurrentUser();
   }
 
   logout() {
-    this.authService.logout();
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Logout error:', err);
+        // Aún así limpiar y redirigir
+        this.authService.clearAuth();
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  navigateToGenerator() {
+    this.router.navigate(['/generator']);
+  }
+
+  navigateToHistory() {
+    this.router.navigate(['/history']);
+  }
+
+  navigateToFavorites() {
+    this.router.navigate(['/favorites']);
   }
 }

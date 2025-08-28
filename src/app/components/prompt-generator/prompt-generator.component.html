@@ -1,0 +1,85 @@
+<div class="prompt-generator-container">
+  <div class="header">
+    <h2>🤖 Generador de Prompts IA</h2>
+    <p>Crea prompts optimizados para diferentes modelos de inteligencia artificial</p>
+  </div>
+
+  <div class="form-section">
+    <div class="form-group">
+      <label for="provider">Modelo de IA:</label>
+      <select id="provider" [(ngModel)]="selectedProvider" class="form-select">
+        <option *ngFor="let provider of providers" [value]="provider.value">
+          {{ provider.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Categoría:</label>
+      <select id="category" [(ngModel)]="selectedCategory" class="form-select">
+        <option *ngFor="let category of categories" [value]="category.value">
+          {{ category.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="promptInput">Describe tu idea o necesidad:</label>
+      <textarea 
+        id="promptInput"
+        [(ngModel)]="promptInput" 
+        rows="5" 
+        placeholder="Ej: Necesito un prompt para crear contenido de marketing sobre productos tecnológicos..."
+        class="form-textarea">
+      </textarea>
+    </div>
+
+    <div class="button-group">
+      <button 
+        (click)="generate()" 
+        [disabled]="isLoading || !promptInput.trim()"
+        class="btn btn-primary">
+        <span *ngIf="isLoading">🔄 Generando...</span>
+        <span *ngIf="!isLoading">✨ Generar Prompt</span>
+      </button>
+      
+      <button 
+        (click)="clearForm()" 
+        class="btn btn-secondary">
+        🗑️ Limpiar
+      </button>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      ⚠️ {{ errorMessage }}
+    </div>
+  </div>
+
+  <div *ngIf="generatedPrompt" class="result-section">
+    <div class="result-header">
+      <h3>🎯 Prompt Generado:</h3>
+      <div class="result-actions">
+        <button (click)="copyToClipboard()" class="btn btn-small">
+          📋 Copiar
+        </button>
+        <button (click)="savePrompt()" class="btn btn-small btn-success">
+          💾 Guardar
+        </button>
+      </div>
+    </div>
+    
+    <div class="prompt-result">
+      <p>{{ generatedPrompt }}</p>
+    </div>
+  </div>
+
+  <div class="tips-section">
+    <h4>💡 Consejos para mejores prompts:</h4>
+    <ul>
+      <li>Sé específico sobre lo que quieres lograr</li>
+      <li>Incluye el contexto y el público objetivo</li>
+      <li>Especifica el tono y estilo deseado</li>
+      <li>Menciona el formato de salida esperado</li>
+    </ul>
+  </div>
+</div>

@@ -15,6 +15,13 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   
+  // Ruta del generador de prompts (protegida)
+  {
+    path: 'generator',
+    loadComponent: () => import('./components/prompt-generator/prompt-generator.component').then(m => m.PromptGeneratorComponent),
+    canActivate: [AuthGuard]
+  },
+  
   // Ruta principal (protegida)
   {
     path: '',

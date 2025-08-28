@@ -20,13 +20,13 @@ export class LoginComponent {
   login() {
     this.authService.login({ username: this.username, password: this.password }).subscribe({
       next: (res) => {
-        this.authService.saveToken(res.token);
-        if (res.user) {
-          this.authService.saveUser(res.user);
-        }
+        // El token ya se guarda automáticamente en memoria
         this.router.navigate(['/dashboard']);
       },
-      error: () => alert('Invalid credentials')
+      error: (err) => {
+        console.error('Login error:', err);
+        alert('Credenciales inválidas');
+      }
     });
   }
 }

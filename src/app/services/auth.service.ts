@@ -1,50 +1,90 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+
+export interface LoginCredentials {
+  username: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  accessToken: string;
+  user?: any;
+  message?: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private apiUrl = `${environment.api}/auth`;
+  private accessToken: string | null = null;
 
   constructor(private http: HttpClient) {}
 
   /**
-   * Método para hacer login (POST al backend)
+   * Login con refresh token en HttpOnly cookie
    */
-  login(credentials: {username: string, password: string}): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, credentials);
+  login(credentials: LoginCredentials): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials, { 
+      withCredentials: true 
+    }).pipe(
+      tap(res => {
+        this.accessToken = res.accessToken;
+        if (res.user) {
+          this.saveUser(res.user);
+        }
+      })
+    );
   }
 
   /**
-   * Guardar el JWT en localStorage
+   * Establecer access token en memoria
    */
-  saveToken(token: string) {
-    localStorage.setItem('token', token);
+  setAccessToken(token: string): void {
+    this.accessToken = token;
   }
 
   /**
-   * Obtener el token del localStorage
+   * Obtener access token de memoria
    */
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  getAccessToken(): string | null {
+    return this.accessToken;
   }
 
   /**
-   * Método para cerrar sesión
+   * Logout que limpia cookies y memoria
    */
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('current_user');
+  logout(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/logout`, {}, { 
+      withCredentials: true 
+    }).pipe(
+      tap(() => {
+        this.accessToken = null;
+        localStorage.removeItem('current_user');
+      })
+    );
+  }
+
+  /**
+   * Refresh token automático usando HttpOnly cookie
+   */
+  refresh(): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/refresh`, {}, { 
+      withCredentials: true 
+    }).pipe(
+      tap(res => {
+        this.accessToken = res.accessToken;
+      })
+    );
   }
 
   /**
    * Verificar si el usuario está autenticado
    */
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return !!this.accessToken;
   }
 
   /**
@@ -58,7 +98,15 @@ export class AuthService {
   /**
    * Guardar información del usuario
    */
-  saveUser(user: any) {
+  saveUser(user: any): void {
     localStorage.setItem('current_user', JSON.stringify(user));
+  }
+
+  /**
+   * Limpiar datos de autenticación
+   */
+  clearAuth(): void {
+    this.accessToken = null;
+    localStorage.removeItem('current_user');
   }
 }

@@ -1,24 +1,83 @@
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable, Injector } from '@angular/core';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { catchError, filter, take, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  private isRefreshing = false;
+  private refreshSubject = new BehaviorSubject<string | null>(null);
+
+  constructor(
+    private authService: AuthService,
+    private injector: Injector,
+    private router: Router
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken();
+    const token = this.authService.getAccessToken();
+    let request = req;
 
+    // Agregar token si existe
     if (token) {
-      const cloned = req.clone({
+      request = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
         }
       });
-      return next.handle(cloned);
     }
 
-    return next.handle(req);
+    return next.handle(request).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 401) {
+          // Si ya estamos refrescando, esperar la respuesta
+          if (!this.isRefreshing) {
+            this.isRefreshing = true;
+            this.refreshSubject.next(null);
+
+            return this.authService.refresh().pipe(
+              switchMap((res: any) => {
+                this.isRefreshing = false;
+                this.refreshSubject.next(res.accessToken);
+                
+                // Reintentar la petición original con nuevo token
+                const newReq = req.clone({
+                  setHeaders: {
+                    Authorization: `Bearer ${res.accessToken}`
+                  }
+                });
+                return next.handle(newReq);
+              }),
+              catchError((refreshErr) => {
+                this.isRefreshing = false;
+                this.refreshSubject.next(null);
+                
+                // Limpiar autenticación y redirigir al login
+                this.authService.clearAuth();
+                this.router.navigate(['/login']);
+                return throwError(() => refreshErr);
+              })
+            );
+          } else {
+            // Si otra petición está refrescando, esperar al nuevo token
+            return this.refreshSubject.pipe(
+              filter(tokenVal => tokenVal !== null),
+              take(1),
+              switchMap((token) => {
+                const newReq = req.clone({
+                  setHeaders: {
+                    Authorization: `Bearer ${token}`
+                  }
+                });
+                return next.handle(newReq);
+              })
+            );
+          }
+        }
+        return throwError(() => err);
+      })
+    );
   }
 }
