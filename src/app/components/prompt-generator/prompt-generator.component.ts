@@ -33,15 +33,15 @@ import { MatChipsModule } from '@angular/material/chips';
   ]
 })
 export class PromptGeneratorComponent {
-  promptInput: string = '';
-  generatedPrompt: string = '';
-  selectedProvider: string = 'openai';
-  selectedCategory: string = 'chat';
-  isLoading: boolean = false;
-  errorMessage: string = '';
-  activeTab: number = 0;
-  characterCount: number = 0;
-  maxCharacters: number = 500;
+  promptInput = '';
+  generatedPrompt = '';
+  selectedProvider = 'openai';
+  selectedCategory = 'chat';
+  isLoading = false;
+  errorMessage = '';
+  activeTab = 'generator';
+  characterCount = 0;
+  maxCharacters = 500;
 
   // Opciones disponibles
   providers = [
@@ -190,7 +190,7 @@ El contenido debe ser apropiado para todas las edades y cumplir con las polític
   }
 
   getCategoryIcon(value: string): string {
-    const iconMap: { [key: string]: string } = {
+    const iconMap: Record<string, string> = {
       'chat': 'chat',
       'creative': 'palette',
       'business': 'business',
@@ -204,7 +204,7 @@ El contenido debe ser apropiado para todas las edades y cumplir con las polític
   }
 
   getCategoryDescription(value: string): string {
-    const descriptionMap: { [key: string]: string } = {
+    const descriptionMap: Record<string, string> = {
       'chat': 'Prompts para conversaciones y diálogos',
       'creative': 'Prompts para contenido creativo y artístico',
       'business': 'Prompts para negocios y emprendimiento',
@@ -219,6 +219,6 @@ El contenido debe ser apropiado para todas las edades y cumplir con las polític
 
   selectCategory(categoryValue: string) {
     this.selectedCategory = categoryValue;
-    this.activeTab = 0; // Cambiar a la pestaña del generador
+    this.activeTab = 'generator'; // Cambiar a la pestaña del generador
   }
 }
