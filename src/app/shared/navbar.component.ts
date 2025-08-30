@@ -27,7 +27,7 @@ import { Observable, map } from 'rxjs';
         <!-- Logo y título -->
         <div class="brand" routerLink="/">
           <mat-icon class="brand-icon">auto_fix_high</mat-icon>
-          <span class="brand-text">PromptGenius</span>
+          <span class="app-title">PromptGenius</span>
         </div>
 
         <!-- Navegación principal -->
@@ -127,6 +127,7 @@ import { Observable, map } from 'rxjs';
       top: 0;
       z-index: 1000;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
     }
 
     .navbar-content {
@@ -157,11 +158,13 @@ import { Observable, map } from 'rxjs';
       font-size: 28px;
       height: 28px;
       width: 28px;
+      color: white;
     }
 
-    .brand-text {
-      font-size: 1.5rem;
-      font-weight: 500;
+    .app-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
       letter-spacing: -0.5px;
     }
 
@@ -179,10 +182,15 @@ import { Observable, map } from 'rxjs';
       gap: 6px;
       border-radius: 8px;
       transition: background-color 0.2s;
+      color: white;
     }
 
     .nav-links a.active {
       background-color: rgba(255,255,255,0.1);
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255,255,255,0.05);
     }
 
     .user-menu {
@@ -204,6 +212,7 @@ import { Observable, map } from 'rxjs';
       display: flex;
       align-items: center;
       gap: 4px;
+      color: white;
     }
 
     .mobile-menu {
@@ -224,8 +233,8 @@ import { Observable, map } from 'rxjs';
         display: block;
       }
 
-      .brand-text {
-        display: none;
+      .app-title {
+        font-size: 18px;
       }
 
       .auth-btn span {
@@ -236,6 +245,10 @@ import { Observable, map } from 'rxjs';
     @media (max-width: 480px) {
       .navbar-content {
         padding: 0 8px;
+      }
+
+      .app-title {
+        font-size: 16px;
       }
 
       .user-menu .auth-btn:first-child {
@@ -264,8 +277,6 @@ export class NavbarComponent {
       map(favorites => favorites.length)
     );
   }
-
-
 
   logout() {
     this.authService.logout();

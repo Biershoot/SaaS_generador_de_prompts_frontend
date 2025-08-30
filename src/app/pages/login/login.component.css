@@ -5,53 +5,55 @@
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  box-sizing: border-box;
 }
 
-.auth-card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-  width: 100%;
+.login-card {
   max-width: 450px;
-  position: relative;
+  width: 100%;
+  margin: auto;
+  border-radius: 16px;
+  box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
-.auth-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+/* Header de la tarjeta */
+.login-card mat-card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 32px 32px 24px 32px;
+  margin: 0;
+  text-align: center;
 }
 
-.auth-header {
-  text-align: center;
-  margin-bottom: 32px;
+.auth-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0;
+  color: white;
 }
 
 .auth-icon {
-  font-size: 48px;
-  width: 48px;
-  height: 48px;
-  color: #667eea;
-  margin-bottom: 16px;
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: white;
 }
 
-.auth-header h1 {
-  margin: 0 0 8px 0;
-  color: #333;
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.auth-header p {
-  margin: 0;
-  color: #666;
+.login-card mat-card-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 8px 0 0 0;
   font-size: 1rem;
+}
+
+/* Contenido de la tarjeta */
+.login-card mat-card-content {
+  padding: 32px;
+  background: white;
 }
 
 .auth-form {
@@ -60,7 +62,7 @@
 
 .full-width {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .auth-button {
@@ -74,16 +76,21 @@
   justify-content: center;
   gap: 8px;
   transition: all 0.3s ease;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
 }
 
 .auth-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
 }
 
 .auth-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Estilos para Material Form Fields */
@@ -167,10 +174,15 @@
 }
 
 /* Footer */
+.login-card mat-card-actions {
+  padding: 24px 32px 32px 32px;
+  margin: 0;
+  background: white;
+}
+
 .auth-footer {
   text-align: center;
-  padding-top: 24px;
-  border-top: 1px solid #e9ecef;
+  width: 100%;
 }
 
 .auth-footer p {
@@ -202,13 +214,26 @@
     padding: 16px;
   }
 
-  .auth-card {
-    padding: 32px 24px;
+  .login-card {
     max-width: 100%;
   }
 
-  .auth-header h1 {
-    font-size: 1.75rem;
+  .login-card mat-card-header {
+    padding: 24px 24px 20px 24px;
+  }
+
+  .auth-title {
+    font-size: 1.5rem;
+  }
+
+  .auth-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .login-card mat-card-content {
+    padding: 24px;
   }
 
   .test-credentials {
@@ -219,21 +244,33 @@
     font-size: 0.8rem;
     padding: 10px 12px;
   }
+
+  .login-card mat-card-actions {
+    padding: 20px 24px 24px 24px;
+  }
 }
 
 @media (max-width: 480px) {
-  .auth-card {
-    padding: 24px 20px;
+  .auth-container {
+    padding: 12px;
   }
 
-  .auth-header h1 {
-    font-size: 1.5rem;
+  .login-card mat-card-header {
+    padding: 20px 20px 16px 20px;
+  }
+
+  .auth-title {
+    font-size: 1.25rem;
   }
 
   .auth-icon {
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .login-card mat-card-content {
+    padding: 20px;
   }
 
   .test-credentials {
@@ -244,10 +281,14 @@
     font-size: 0.75rem;
     padding: 8px 10px;
   }
+
+  .login-card mat-card-actions {
+    padding: 16px 20px 20px 20px;
+  }
 }
 
 /* Animaciones */
-.auth-card {
+.login-card {
   animation: slideInUp 0.5s ease-out;
 }
 
@@ -269,4 +310,23 @@
 
 ::ng-deep .mat-mdc-progress-spinner circle {
   stroke: currentColor;
+}
+
+/* Mejoras de accesibilidad */
+.auth-button:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+::ng-deep .mat-mdc-form-field input:focus {
+  outline: none;
+}
+
+/* Estilos para estados de error */
+::ng-deep .mat-mdc-form-field.mat-mdc-form-field-invalid .mat-mdc-form-field-outline {
+  color: #f44336;
+}
+
+::ng-deep .mat-mdc-form-field.mat-mdc-form-field-invalid .mat-mdc-form-field-label {
+  color: #f44336;
 }
