@@ -30,11 +30,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
   font-size: 1.75rem;
   font-weight: 600;
   margin: 0;
   color: white;
+}
+
+.title-text {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  line-height: 1.2;
+  margin: 0;
 }
 
 .auth-icon {
@@ -42,6 +50,7 @@
   width: 32px;
   height: 32px;
   color: white;
+  flex-shrink: 0;
 }
 
 .login-card mat-card-subtitle {
@@ -79,6 +88,14 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
+}
+
+.button-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .auth-button:hover:not(:disabled) {
@@ -226,6 +243,10 @@
     font-size: 1.5rem;
   }
 
+  .title-text {
+    font-size: 1.5rem;
+  }
+
   .auth-icon {
     font-size: 28px;
     width: 28px;
@@ -260,6 +281,10 @@
   }
 
   .auth-title {
+    font-size: 1.25rem;
+  }
+
+  .title-text {
     font-size: 1.25rem;
   }
 

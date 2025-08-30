@@ -2,8 +2,7 @@
   <mat-card class="login-card">
     <mat-card-header>
       <mat-card-title class="auth-title">
-        <mat-icon class="auth-icon">lock</mat-icon>
-        Iniciar Sesión
+        <h2 class="title-text">Iniciar Sesión</h2>
       </mat-card-title>
       <mat-card-subtitle>
         Accede a tu cuenta para continuar
@@ -59,7 +58,7 @@
           [disabled]="loading || !email || !password || !isValidEmail(email)"
         >
           <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-          <span *ngIf="!loading">Iniciar Sesión</span>
+          <span *ngIf="!loading" class="button-text">Iniciar Sesión</span>
         </button>
       </form>
 
