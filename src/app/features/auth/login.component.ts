@@ -25,7 +25,6 @@ import { AuthService } from '../../core/auth.service';
       <mat-card class="auth-card">
         <mat-card-header>
           <mat-card-title class="auth-title">
-            <mat-icon>login</mat-icon>
             Iniciar Sesión
           </mat-card-title>
           <mat-card-subtitle>
@@ -39,7 +38,6 @@ import { AuthService } from '../../core/auth.service';
               <mat-label>Correo electrónico</mat-label>
               <input matInput type="email" formControlName="email"
                      placeholder="tu@email.com" required>
-              <mat-icon matSuffix>email</mat-icon>
               <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
                 El correo es requerido
               </mat-error>
@@ -67,7 +65,6 @@ import { AuthService } from '../../core/auth.service';
             <div class="auth-actions">
               <button mat-raised-button color="primary" type="submit"
                       [disabled]="loading || loginForm.invalid" class="auth-button">
-                <mat-icon *ngIf="!loading">login</mat-icon>
                 <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
                 {{ loading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
               </button>
@@ -79,7 +76,6 @@ import { AuthService } from '../../core/auth.service';
           <div class="auth-footer">
             <p>¿No tienes una cuenta?</p>
             <a mat-button color="primary" routerLink="/register">
-              <mat-icon>person_add</mat-icon>
               Crear Cuenta
             </a>
           </div>

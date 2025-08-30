@@ -36,7 +36,6 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
       <mat-card class="auth-card">
         <mat-card-header>
           <mat-card-title class="auth-title">
-            <mat-icon>person_add</mat-icon>
             Crear Cuenta
           </mat-card-title>
           <mat-card-subtitle>
@@ -50,7 +49,6 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
                <mat-label>Nombre completo</mat-label>
                <input matInput type="text" formControlName="fullName"
                       placeholder="Tu nombre completo" required>
-               <mat-icon matSuffix>person</mat-icon>
                <mat-error *ngIf="registerForm.get('fullName')?.hasError('required')">
                  El nombre es requerido
                </mat-error>
@@ -63,7 +61,6 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
               <mat-label>Correo electrónico</mat-label>
               <input matInput type="email" formControlName="email"
                      placeholder="tu@email.com" required>
-              <mat-icon matSuffix>email</mat-icon>
               <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
                 El correo es requerido
               </mat-error>
@@ -107,7 +104,6 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
             <div class="auth-actions">
               <button mat-raised-button color="primary" type="submit"
                       [disabled]="loading || registerForm.invalid" class="auth-button">
-                <mat-icon *ngIf="!loading">person_add</mat-icon>
                 <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
                 {{ loading ? 'Creando cuenta...' : 'Crear Cuenta' }}
               </button>
@@ -119,7 +115,6 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
           <div class="auth-footer">
             <p>¿Ya tienes una cuenta?</p>
             <a mat-button color="primary" routerLink="/login">
-              <mat-icon>login</mat-icon>
               Iniciar Sesión
             </a>
           </div>
