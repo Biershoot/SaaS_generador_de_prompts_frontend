@@ -26,7 +26,6 @@ import { Observable, map } from 'rxjs';
       <div class="navbar-content">
         <!-- Logo y título -->
         <div class="brand" routerLink="/">
-          <mat-icon class="brand-icon">auto_fix_high</mat-icon>
           <span class="app-title">PromptGenius</span>
         </div>
 
@@ -34,22 +33,19 @@ import { Observable, map } from 'rxjs';
         <nav class="nav-links" *ngIf="isAuthenticated$ | async">
           <a mat-button routerLink="/" routerLinkActive="active"
              [routerLinkActiveOptions]="{exact:true}">
-            <mat-icon>home</mat-icon>
             Generador
           </a>
           <a mat-button routerLink="/history" routerLinkActive="active">
-            <mat-icon [matBadge]="promptCount$ | async" matBadgeSize="small"
-                      matBadgeColor="accent" [matBadgeHidden]="(promptCount$ | async) === 0">
-              history
-            </mat-icon>
-            Historial
+            <span [matBadge]="promptCount$ | async" matBadgeSize="small"
+                  matBadgeColor="accent" [matBadgeHidden]="(promptCount$ | async) === 0">
+              Historial
+            </span>
           </a>
           <a mat-button routerLink="/favorites" routerLinkActive="active">
-            <mat-icon [matBadge]="favoriteCount$ | async" matBadgeSize="small"
-                      matBadgeColor="warn" [matBadgeHidden]="(favoriteCount$ | async) === 0">
-              favorite
-            </mat-icon>
-            Favoritos
+            <span [matBadge]="favoriteCount$ | async" matBadgeSize="small"
+                  matBadgeColor="warn" [matBadgeHidden]="(favoriteCount$ | async) === 0">
+              Favoritos
+            </span>
           </a>
         </nav>
 
@@ -62,16 +58,13 @@ import { Observable, map } from 'rxjs';
             </button>
             <mat-menu #userMenu="matMenu">
               <div class="user-info">
-                <mat-icon>person</mat-icon>
                 <span>{{ (currentUser$ | async)?.fullName }}</span>
               </div>
               <mat-divider></mat-divider>
               <button mat-menu-item routerLink="/profile">
-                <mat-icon>settings</mat-icon>
                 <span>Perfil</span>
               </button>
               <button mat-menu-item (click)="logout()">
-                <mat-icon>logout</mat-icon>
                 <span>Cerrar Sesión</span>
               </button>
             </mat-menu>
@@ -79,11 +72,9 @@ import { Observable, map } from 'rxjs';
 
           <ng-template #authButtons>
             <a mat-button routerLink="/login" class="auth-btn">
-              <mat-icon>login</mat-icon>
               Iniciar Sesión
             </a>
             <a mat-raised-button color="accent" routerLink="/register" class="auth-btn">
-              <mat-icon>person_add</mat-icon>
               Registrarse
             </a>
           </ng-template>
@@ -97,24 +88,20 @@ import { Observable, map } from 'rxjs';
         </button>
         <mat-menu #mobileMenu="matMenu" class="mobile-nav">
           <a mat-menu-item routerLink="/" routerLinkActive="active">
-            <mat-icon>home</mat-icon>
             <span>Generador</span>
           </a>
           <a mat-menu-item routerLink="/history" routerLinkActive="active">
-            <mat-icon [matBadge]="promptCount$ | async" matBadgeSize="small">
-              history
-            </mat-icon>
-            <span>Historial</span>
+            <span [matBadge]="promptCount$ | async" matBadgeSize="small">
+              Historial
+            </span>
           </a>
           <a mat-menu-item routerLink="/favorites" routerLinkActive="active">
-            <mat-icon [matBadge]="favoriteCount$ | async" matBadgeSize="small">
-              favorite
-            </mat-icon>
-            <span>Favoritos</span>
+            <span [matBadge]="favoriteCount$ | async" matBadgeSize="small">
+              Favoritos
+            </span>
           </a>
           <mat-divider></mat-divider>
           <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon>
             <span>Cerrar Sesión</span>
           </button>
         </mat-menu>
@@ -152,13 +139,6 @@ import { Observable, map } from 'rxjs';
 
     .brand:hover {
       opacity: 0.8;
-    }
-
-    .brand-icon {
-      font-size: 28px;
-      height: 28px;
-      width: 28px;
-      color: white;
     }
 
     .app-title {

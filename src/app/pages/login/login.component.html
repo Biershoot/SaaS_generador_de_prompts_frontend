@@ -22,7 +22,6 @@
             required
             [class.invalid]="email && !isValidEmail(email)"
           >
-          <mat-icon matSuffix>email</mat-icon>
           <mat-error *ngIf="email && !isValidEmail(email)">
             Por favor ingresa un email válido
           </mat-error>
