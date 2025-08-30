@@ -1,78 +1,90 @@
 <div class="auth-container">
   <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title class="auth-title">
+    <mat-card-header class="login-header">
+      <mat-card-title class="login-title">
         <h2 class="title-text">Iniciar Sesión</h2>
       </mat-card-title>
-      <mat-card-subtitle>
-        Accede a tu cuenta para continuar
+      <mat-card-subtitle class="login-subtitle">
+        Accede a tu cuenta para generar prompts increíbles
       </mat-card-subtitle>
     </mat-card-header>
 
-    <mat-card-content>
+    <mat-card-content class="login-content">
       <form (ngSubmit)="login()" class="auth-form">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Correo Electrónico</mat-label>
-          <input 
-            matInput 
-            type="email" 
-            [(ngModel)]="email" 
-            name="email"
-            placeholder="tu@email.com"
-            required
-            [class.invalid]="email && !isValidEmail(email)"
-          >
-          <mat-error *ngIf="email && !isValidEmail(email)">
-            Por favor ingresa un email válido
-          </mat-error>
-        </mat-form-field>
+        <!-- Campo de Email -->
+        <div class="form-field-container">
+          <mat-form-field appearance="outline" class="full-width email-field">
+            <mat-label>Correo Electrónico</mat-label>
+            <input 
+              matInput 
+              type="email" 
+              [(ngModel)]="email" 
+              name="email"
+              placeholder="ejemplo@correo.com"
+              required
+              [class.invalid]="email && !isValidEmail(email)"
+            >
+            <mat-error *ngIf="email && !isValidEmail(email)">
+              Por favor ingresa un email válido
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Contraseña</mat-label>
-          <input 
-            matInput 
-            [type]="hidePassword ? 'password' : 'text'"
-            [(ngModel)]="password" 
-            name="password"
-            placeholder="Tu contraseña"
-            required
-          >
-          <mat-error *ngIf="password && password.length < 6">
-            La contraseña debe tener al menos 6 caracteres
-          </mat-error>
-        </mat-form-field>
+        <!-- Campo de Contraseña -->
+        <div class="form-field-container">
+          <mat-form-field appearance="outline" class="full-width password-field">
+            <mat-label>Contraseña</mat-label>
+            <input 
+              matInput 
+              type="password"
+              [(ngModel)]="password" 
+              name="password"
+              placeholder="••••••••"
+              required
+            >
+            <mat-error *ngIf="password && password.length < 6">
+              La contraseña debe tener al menos 6 caracteres
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-        <button 
-          mat-raised-button 
-          color="primary" 
-          type="submit" 
-          class="auth-button full-width"
-          [disabled]="loading || !email || !password || !isValidEmail(email)"
-        >
-          <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-          <span *ngIf="!loading" class="button-text">Iniciar Sesión</span>
-        </button>
+        <!-- Botón de Login -->
+        <div class="button-container">
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit" 
+            class="auth-button full-width"
+            [disabled]="loading || !email || !password || !isValidEmail(email)"
+          >
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading" class="button-text">Iniciar Sesión</span>
+          </button>
+        </div>
       </form>
 
       <!-- Información de credenciales de prueba -->
       <div class="test-credentials">
-        <h3>Credenciales de Prueba</h3>
-        <p>Usa estas credenciales para probar la aplicación:</p>
-        <div class="credential-item">
-          <strong>Admin:</strong> admin@test.com / admin123
-        </div>
-        <div class="credential-item">
-          <strong>Usuario:</strong> user@test.com / user123
-        </div>
-        <div class="credential-item">
-          <strong>Test:</strong> test@test.com / test123
+        <h3 class="credentials-title">Credenciales de Prueba</h3>
+        <p class="credentials-description">Usa estas credenciales para probar la aplicación:</p>
+        <div class="credentials-list">
+          <div class="credential-item">
+            <strong>Admin:</strong> admin@test.com / admin123
+          </div>
+          <div class="credential-item">
+            <strong>Usuario:</strong> user@test.com / user123
+          </div>
+          <div class="credential-item">
+            <strong>Test:</strong> test@test.com / test123
+          </div>
         </div>
       </div>
     </mat-card-content>
 
-    <mat-card-actions>
+    <mat-card-actions class="login-actions">
       <div class="auth-footer">
-        <p>¿No tienes una cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+        <p class="footer-text">¿No tienes una cuenta?</p>
+        <a routerLink="/register" class="register-link">Regístrate aquí</a>
       </div>
     </mat-card-actions>
   </mat-card>
