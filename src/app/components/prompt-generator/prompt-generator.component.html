@@ -1,85 +1,233 @@
 <div class="prompt-generator-container">
-  <div class="header">
-    <h2>🤖 Generador de Prompts IA</h2>
-    <p>Crea prompts optimizados para diferentes modelos de inteligencia artificial</p>
-  </div>
-
-  <div class="form-section">
-    <div class="form-group">
-      <label for="provider">Modelo de IA:</label>
-      <select id="provider" [(ngModel)]="selectedProvider" class="form-select">
-        <option *ngFor="let provider of providers" [value]="provider.value">
-          {{ provider.label }}
-        </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="category">Categoría:</label>
-      <select id="category" [(ngModel)]="selectedCategory" class="form-select">
-        <option *ngFor="let category of categories" [value]="category.value">
-          {{ category.label }}
-        </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="promptInput">Describe tu idea o necesidad:</label>
-      <textarea 
-        id="promptInput"
-        [(ngModel)]="promptInput" 
-        rows="5" 
-        placeholder="Ej: Necesito un prompt para crear contenido de marketing sobre productos tecnológicos..."
-        class="form-textarea">
-      </textarea>
-    </div>
-
-    <div class="button-group">
-      <button 
-        (click)="generate()" 
-        [disabled]="isLoading || !promptInput.trim()"
-        class="btn btn-primary">
-        <span *ngIf="isLoading">🔄 Generando...</span>
-        <span *ngIf="!isLoading">✨ Generar Prompt</span>
-      </button>
+  <!-- Header con navegación -->
+  <div class="app-header">
+    <div class="header-content">
+      <div class="logo">
+        <mat-icon>auto_fix_high</mat-icon>
+        <span>PromptGenius</span>
+      </div>
       
-      <button 
-        (click)="clearForm()" 
-        class="btn btn-secondary">
-        🗑️ Limpiar
-      </button>
-    </div>
-
-    <div *ngIf="errorMessage" class="error-message">
-      ⚠️ {{ errorMessage }}
-    </div>
-  </div>
-
-  <div *ngIf="generatedPrompt" class="result-section">
-    <div class="result-header">
-      <h3>🎯 Prompt Generado:</h3>
-      <div class="result-actions">
-        <button (click)="copyToClipboard()" class="btn btn-small">
-          📋 Copiar
+      <nav class="nav-tabs">
+        <button class="nav-tab active">
+          <mat-icon>generator</mat-icon>
+          Generador
         </button>
-        <button (click)="savePrompt()" class="btn btn-small btn-success">
-          💾 Guardar
+        <button class="nav-tab">
+          <mat-icon>history</mat-icon>
+          Historial
         </button>
+        <button class="nav-tab">
+          <mat-icon>favorite</mat-icon>
+          Favoritos
+        </button>
+      </nav>
+      
+      <div class="user-menu">
+        <mat-icon>account_circle</mat-icon>
       </div>
     </div>
-    
-    <div class="prompt-result">
-      <p>{{ generatedPrompt }}</p>
-    </div>
   </div>
 
-  <div class="tips-section">
-    <h4>💡 Consejos para mejores prompts:</h4>
-    <ul>
-      <li>Sé específico sobre lo que quieres lograr</li>
-      <li>Incluye el contexto y el público objetivo</li>
-      <li>Especifica el tono y estilo deseado</li>
-      <li>Menciona el formato de salida esperado</li>
-    </ul>
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <!-- Sección del generador -->
+    <div class="generator-section">
+      <h1 class="section-title">
+        <mat-icon>auto_fix_high</mat-icon>
+        Generador de Prompts IA
+      </h1>
+
+      <!-- Controles de selección -->
+      <div class="selection-controls">
+        <mat-form-field appearance="outline" class="provider-select">
+          <mat-label>Proveedor de IA*</mat-label>
+          <mat-select [(ngModel)]="selectedProvider">
+            <mat-option *ngFor="let provider of providers" [value]="provider.value">
+              {{ provider.label }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>smart_toy</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="category-select">
+          <mat-label>Categoría*</mat-label>
+          <mat-select [(ngModel)]="selectedCategory">
+            <mat-option *ngFor="let category of categories" [value]="category.value">
+              {{ category.label }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>category</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Área de entrada del prompt -->
+      <mat-form-field appearance="outline" class="prompt-input">
+        <mat-label>Escribe tu prompt*</mat-label>
+        <textarea 
+          matInput 
+          [(ngModel)]="promptInput"
+          (input)="onPromptInputChange()"
+          rows="6"
+          placeholder="hola hazme un promt con sobre mi video extremo para youtube"
+          maxlength="500">
+        </textarea>
+        <mat-icon matSuffix>edit</mat-icon>
+        <mat-hint align="end">{{ characterCount }}/{{ maxCharacters }}</mat-hint>
+        <mat-error *ngIf="promptInput.length < 5 && promptInput.length > 0">
+          Mínimo 5 caracteres
+        </mat-error>
+      </mat-form-field>
+
+      <div class="input-hint">Mínimo 5 caracteres</div>
+
+      <!-- Botones de acción -->
+      <div class="action-buttons">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="generate()"
+          [disabled]="isLoading || !promptInput.trim() || promptInput.length < 5"
+          class="generate-btn">
+          <mat-icon *ngIf="!isLoading">auto_fix_high</mat-icon>
+          <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+          {{ isLoading ? 'Generando...' : 'Generar Prompt' }}
+        </button>
+        
+        <button 
+          mat-button 
+          color="warn" 
+          (click)="clearForm()"
+          class="clear-btn">
+          <mat-icon>clear</mat-icon>
+          Limpiar
+        </button>
+      </div>
+
+      <!-- Resultado generado -->
+      <div *ngIf="generatedPrompt" class="result-section">
+        <div class="result-header">
+          <h3>
+            <mat-icon>lightbulb</mat-icon>
+            Prompt Generado
+          </h3>
+          <div class="result-actions">
+            <button mat-icon-button (click)="copyToClipboard(generatedPrompt)" matTooltip="Copiar">
+              <mat-icon>content_copy</mat-icon>
+            </button>
+            <button mat-icon-button (click)="toggleFavorite({id: 'current', generated: generatedPrompt})" matTooltip="Guardar en favoritos">
+              <mat-icon>favorite_border</mat-icon>
+            </button>
+          </div>
+        </div>
+        
+        <div class="prompt-result">
+          <p>{{ generatedPrompt }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pestañas de historial, favoritos y categorías -->
+    <div class="tabs-section">
+      <mat-tab-group [(selectedIndex)]="activeTab" class="custom-tabs">
+        <mat-tab label="Historial">
+          <div class="tab-content">
+            <div class="tab-watermark">historial</div>
+            
+            <div *ngIf="historyPrompts.length === 0" class="empty-state">
+              <mat-icon>history</mat-icon>
+              <h3>No hay prompts en el historial</h3>
+              <p>Los prompts generados aparecerán aquí</p>
+            </div>
+
+            <div *ngIf="historyPrompts.length > 0" class="prompts-list">
+              <div *ngFor="let prompt of historyPrompts" class="prompt-item">
+                <div class="prompt-header">
+                  <div class="prompt-meta">
+                    <mat-chip-set>
+                      <mat-chip>{{ getProviderLabel(prompt.provider) }}</mat-chip>
+                      <mat-chip>{{ getCategoryLabel(prompt.category) }}</mat-chip>
+                    </mat-chip-set>
+                    <span class="timestamp">{{ prompt.timestamp | date:'short' }}</span>
+                  </div>
+                  <div class="prompt-actions">
+                    <button mat-icon-button (click)="copyToClipboard(prompt.generated)" matTooltip="Copiar">
+                      <mat-icon>content_copy</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="toggleFavorite(prompt)" matTooltip="Favorito">
+                      <mat-icon>{{ prompt.isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="deletePrompt(prompt, historyPrompts)" matTooltip="Eliminar">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="prompt-content">
+                  <p class="prompt-input-text"><strong>Entrada:</strong> {{ prompt.input }}</p>
+                  <p class="prompt-generated-text">{{ prompt.generated }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Favoritos">
+          <div class="tab-content">
+            <div class="tab-watermark">favoritos</div>
+            
+            <div *ngIf="favoritePrompts.length === 0" class="empty-state">
+              <mat-icon>favorite_border</mat-icon>
+              <h3>No hay prompts favoritos</h3>
+              <p>Los prompts marcados como favoritos aparecerán aquí</p>
+            </div>
+
+            <div *ngIf="favoritePrompts.length > 0" class="prompts-list">
+              <div *ngFor="let prompt of favoritePrompts" class="prompt-item favorite">
+                <div class="prompt-header">
+                  <div class="prompt-meta">
+                    <mat-chip-set>
+                      <mat-chip>{{ getProviderLabel(prompt.provider) }}</mat-chip>
+                      <mat-chip>{{ getCategoryLabel(prompt.category) }}</mat-chip>
+                    </mat-chip-set>
+                    <span class="timestamp">{{ prompt.timestamp | date:'short' }}</span>
+                  </div>
+                  <div class="prompt-actions">
+                    <button mat-icon-button (click)="copyToClipboard(prompt.generated)" matTooltip="Copiar">
+                      <mat-icon>content_copy</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="toggleFavorite(prompt)" matTooltip="Quitar de favoritos">
+                      <mat-icon>favorite</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="deletePrompt(prompt, favoritePrompts)" matTooltip="Eliminar">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="prompt-content">
+                  <p class="prompt-input-text"><strong>Entrada:</strong> {{ prompt.input }}</p>
+                  <p class="prompt-generated-text">{{ prompt.generated }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Categorías">
+          <div class="tab-content">
+            <div class="tab-watermark">categorías</div>
+            
+            <div class="categories-grid">
+              <div *ngFor="let category of categories" class="category-card">
+                <mat-icon>{{ getCategoryIcon(category.value) }}</mat-icon>
+                <h4>{{ category.label }}</h4>
+                <p>{{ getCategoryDescription(category.value) }}</p>
+                <button mat-button color="primary" (click)="selectCategory(category.value)">
+                  Ver prompts
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
   </div>
 </div>
