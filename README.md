@@ -17,8 +17,69 @@
 
 ---
 
+## 🎯 ¿Qué Problemática Resuelve?
+
+### 📺 **Para YouTubers y Creadores de Contenido**
+
+**PromptGenius** nace de una necesidad real en la comunidad de creadores de contenido: **la dificultad para crear prompts efectivos y optimizados para videos de YouTube**.
+
+#### **Problemas que Resuelve:**
+
+🔴 **Falta de Tiempo**: Los YouTubers pasan horas escribiendo prompts manualmente para cada video, perdiendo tiempo valioso que podrían usar para crear contenido.
+
+🔴 **Prompts Ineficientes**: Muchos creadores no saben cómo estructurar prompts para obtener los mejores resultados de las IAs, resultando en contenido de baja calidad.
+
+🔴 **Falta de Organización**: No existe una forma sistemática de guardar, categorizar y reutilizar prompts exitosos para futuros videos.
+
+🔴 **Dificultad Técnica**: La curva de aprendizaje para crear prompts efectivos es alta, especialmente para creadores sin experiencia técnica.
+
+🔴 **Inconsistencia**: Cada video requiere prompts diferentes, pero no hay un sistema que mantenga la consistencia en el estilo y calidad.
+
+#### **Solución que Ofrece:**
+
+✅ **Generación Automática**: Crea prompts optimizados en segundos, no en horas.
+
+✅ **Categorización Específica**: Prompts especializados para diferentes tipos de videos (tutoriales, reviews, entretenimiento, etc.).
+
+✅ **Historial Inteligente**: Guarda y organiza todos tus prompts exitosos para reutilizarlos.
+
+✅ **Optimización por IA**: Prompts diseñados específicamente para obtener los mejores resultados de ChatGPT, Claude, y otras IAs.
+
+✅ **Interfaz Intuitiva**: Diseño simple y profesional que cualquier creador puede usar sin conocimientos técnicos.
+
+---
+
+## 📺 Descripción para YouTubers
+
+**PromptGenius** es tu **asistente personal de IA** diseñado específicamente para **creadores de contenido de YouTube**. 
+
+### **¿Qué Hace por Ti?**
+
+🎬 **Genera Prompts para Videos**: Desde descripciones de video hasta guiones completos, prompts para thumbnails, y contenido para redes sociales.
+
+🎯 **Optimiza tu Contenido**: Prompts diseñados para maximizar el engagement, mejorar el SEO, y aumentar las vistas de tus videos.
+
+⏰ **Ahorra Tiempo**: Reduce el tiempo de creación de contenido de horas a minutos, permitiéndote enfocarte en lo que realmente importa: tu audiencia.
+
+📊 **Organiza tu Trabajo**: Sistema de categorías y favoritos para mantener organizados todos tus prompts y reutilizarlos en futuros proyectos.
+
+🚀 **Escala tu Canal**: Con prompts optimizados, podrás crear más contenido de calidad en menos tiempo, ayudando a tu canal a crecer más rápido.
+
+### **Casos de Uso Específicos:**
+
+- **📝 Descripciones de Video**: Genera descripciones optimizadas para SEO
+- **🎨 Thumbnails**: Prompts para crear thumbnails atractivos
+- **📋 Guiones**: Estructura y mejora tus guiones de video
+- **🏷️ Tags**: Optimiza las etiquetas para mejor descubrimiento
+- **📱 Redes Sociales**: Contenido para Instagram, Twitter, TikTok
+- **📊 Análisis**: Prompts para analizar tendencias y competencia
+
+---
+
 ## 📋 Tabla de Contenidos
 
+- [🎯 ¿Qué Problemática Resuelve?](#-qué-problemática-resuelve)
+- [📺 Descripción para YouTubers](#-descripción-para-youtubers)
 - [✨ Características](#-características)
 - [🛠️ Stack Tecnológico](#️-stack-tecnológico)
 - [🚀 Inicio Rápido](#-inicio-rápido)
