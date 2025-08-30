@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { tap, catchError, delay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ConfigService } from './config.service';
 import { TokenService } from './token.service';
@@ -46,20 +46,54 @@ export class AuthService {
   private tokenService = inject(TokenService);
   private errorHandler = inject(ErrorHandlerService);
 
+  // Mock data para desarrollo
+  private mockUsers = [
+    { username: 'admin@test.com', password: 'admin123', fullName: 'Administrador', role: 'admin' },
+    { username: 'user@test.com', password: 'user123', fullName: 'Usuario Demo', role: 'user' },
+    { username: 'test@test.com', password: 'test123', fullName: 'Usuario Test', role: 'user' }
+  ];
+
   constructor() {
     this.checkInitialAuthState();
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
+    // Primero intentar con el backend real
     return this.http.post<AuthResponse>(this.config.authUrls.login, credentials, {
       withCredentials: true // Importante para cookies
     }).pipe(
       tap(response => this.handleAuthResponse(response)),
       catchError(err => {
-        this.errorHandler.handleError(err, 'Login');
-        throw err;
+        console.log('Backend no disponible, usando autenticación mock');
+        // Si falla, usar mock authentication
+        return this.mockLogin(credentials);
       })
     );
+  }
+
+  private mockLogin(credentials: LoginRequest): Observable<AuthResponse> {
+    const user = this.mockUsers.find(u => 
+      u.username === credentials.username && u.password === credentials.password
+    );
+
+    if (user) {
+      const mockResponse: AuthResponse = {
+        accessToken: 'mock-jwt-token-' + Date.now(),
+        username: user.username,
+        fullName: user.fullName,
+        role: user.role
+      };
+
+      return of(mockResponse).pipe(
+        delay(1000), // Simular delay de red
+        tap(response => {
+          this.handleAuthResponse(response);
+          console.log('Login mock exitoso:', response);
+        })
+      );
+    } else {
+      return throwError(() => new Error('Credenciales inválidas'));
+    }
   }
 
   register(userData: RegisterRequest): Observable<AuthResponse> {
@@ -101,8 +135,6 @@ export class AuthService {
     return localStorage.getItem('accessToken');
   }
 
-
-
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
@@ -110,8 +142,6 @@ export class AuthService {
   isAuthenticated(): boolean {
     return this.isAuthenticatedSubject.value;
   }
-
-
 
   refreshToken(): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(this.config.authUrls.refresh, {}, {
@@ -171,5 +201,10 @@ export class AuthService {
     return this.http.get(`${this.config.authUrls.validate}`, {
       withCredentials: true
     });
+  }
+
+  // Método para obtener usuarios mock (para desarrollo)
+  getMockUsers() {
+    return this.mockUsers.map(u => ({ username: u.username, fullName: u.fullName, role: u.role }));
   }
 }
