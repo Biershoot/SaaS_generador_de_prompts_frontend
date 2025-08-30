@@ -50,10 +50,6 @@ import { AuthService } from '../../core/auth.service';
               <mat-label>Contraseña</mat-label>
               <input matInput [type]="hidePassword ? 'password' : 'text'"
                      formControlName="password" placeholder="Tu contraseña" required>
-              <button matSuffix mat-icon-button type="button"
-                      (click)="hidePassword = !hidePassword">
-                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
               <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
                 La contraseña es requerida
               </mat-error>

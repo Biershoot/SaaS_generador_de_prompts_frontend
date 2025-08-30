@@ -36,7 +36,6 @@ import { Observable } from 'rxjs';
     <mat-card class="generator-card">
       <mat-card-header>
         <mat-card-title>
-          <mat-icon>auto_fix_high</mat-icon>
           Generador de Prompts IA
         </mat-card-title>
       </mat-card-header>
@@ -48,11 +47,9 @@ import { Observable } from 'rxjs';
               <mat-label>Proveedor de IA</mat-label>
               <mat-select formControlName="provider" required>
                 <mat-option value="openai">
-                  <mat-icon>psychology</mat-icon>
                   OpenAI (GPT)
                 </mat-option>
                 <mat-option value="claude">
-                  <mat-icon>smart_toy</mat-icon>
                   Anthropic Claude
                 </mat-option>
               </mat-select>
@@ -89,14 +86,12 @@ import { Observable } from 'rxjs';
             <button mat-raised-button color="primary" type="submit"
                     [disabled]="loading || form.invalid"
                     class="generate-btn">
-              <mat-icon *ngIf="!loading">send</mat-icon>
               <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
               {{ loading ? 'Generando...' : 'Generar Prompt' }}
             </button>
 
             <button mat-button type="button" (click)="clearForm()"
                     [disabled]="loading" color="warn">
-              <mat-icon>clear</mat-icon>
               Limpiar
             </button>
           </div>
@@ -108,17 +103,16 @@ import { Observable } from 'rxjs';
     <mat-card *ngIf="result" class="result-card">
       <mat-card-header>
         <mat-card-title>
-          <mat-icon color="primary">lightbulb</mat-icon>
           Resultado Generado
         </mat-card-title>
         <div class="result-actions">
           <button mat-icon-button (click)="copyResult()"
                   matTooltip="Copiar resultado">
-            <mat-icon>content_copy</mat-icon>
+            Copiar
           </button>
           <button mat-icon-button (click)="saveCurrentPrompt()"
                   matTooltip="Guardar en historial" color="primary">
-            <mat-icon>bookmark_add</mat-icon>
+            Guardar
           </button>
         </div>
       </mat-card-header>
@@ -131,10 +125,9 @@ import { Observable } from 'rxjs';
     <!-- Pestañas de Historial y Favoritos -->
     <mat-card class="history-card">
       <mat-tab-group>
-        <!-- Historial Reciente -->
+        <!-- Historial -->
         <mat-tab>
           <ng-template mat-tab-label>
-            <mat-icon>history</mat-icon>
             Historial
             <span *ngIf="(recentPrompts$ | async)?.length"
                   matBadge="{{(recentPrompts$ | async)?.length}}"
@@ -144,7 +137,6 @@ import { Observable } from 'rxjs';
 
           <div class="tab-content">
             <div *ngIf="(recentPrompts$ | async)?.length === 0" class="empty-state">
-              <mat-icon>history</mat-icon>
               <p>No hay prompts en el historial</p>
               <small>Los prompts generados aparecerán aquí</small>
             </div>
@@ -163,19 +155,19 @@ import { Observable } from 'rxjs';
                       <button mat-icon-button (click)="toggleFavorite(prompt)"
                               [color]="prompt.isFavorite ? 'warn' : 'default'"
                               matTooltip="{{prompt.isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}}">
-                        <mat-icon>{{prompt.isFavorite ? 'favorite' : 'favorite_border'}}</mat-icon>
+                        {{prompt.isFavorite ? 'Favorito' : 'No Favorito'}}
                       </button>
                       <button mat-icon-button (click)="copyPromptResult(prompt.result)"
                               matTooltip="Copiar resultado">
-                        <mat-icon>content_copy</mat-icon>
+                        Copiar
                       </button>
                       <button mat-icon-button (click)="reusePrompt(prompt)"
                               matTooltip="Reutilizar prompt" color="primary">
-                        <mat-icon>refresh</mat-icon>
+                        Reutilizar
                       </button>
                       <button mat-icon-button (click)="deletePrompt(prompt.id)"
                               matTooltip="Eliminar" color="warn">
-                        <mat-icon>delete</mat-icon>
+                        Eliminar
                       </button>
                     </div>
                   </div>
@@ -191,7 +183,6 @@ import { Observable } from 'rxjs';
         <!-- Favoritos -->
         <mat-tab>
           <ng-template mat-tab-label>
-            <mat-icon>favorite</mat-icon>
             Favoritos
             <span *ngIf="(favoritePrompts$ | async)?.length"
                   matBadge="{{(favoritePrompts$ | async)?.length}}"
@@ -201,7 +192,6 @@ import { Observable } from 'rxjs';
 
           <div class="tab-content">
             <div *ngIf="(favoritePrompts$ | async)?.length === 0" class="empty-state">
-              <mat-icon>favorite_border</mat-icon>
               <p>No hay prompts favoritos</p>
               <small>Marca prompts como favoritos para acceso rápido</small>
             </div>
@@ -219,15 +209,15 @@ import { Observable } from 'rxjs';
                     <div class="prompt-actions">
                       <button mat-icon-button (click)="toggleFavorite(prompt)"
                               color="warn" matTooltip="Quitar de favoritos">
-                        <mat-icon>favorite</mat-icon>
+                        Quitar Favorito
                       </button>
                       <button mat-icon-button (click)="copyPromptResult(prompt.result)"
                               matTooltip="Copiar resultado">
-                        <mat-icon>content_copy</mat-icon>
+                        Copiar
                       </button>
                       <button mat-icon-button (click)="reusePrompt(prompt)"
                               matTooltip="Reutilizar prompt" color="primary">
-                        <mat-icon>refresh</mat-icon>
+                        Reutilizar
                       </button>
                     </div>
                   </div>
@@ -243,7 +233,6 @@ import { Observable } from 'rxjs';
         <!-- Por Categorías -->
         <mat-tab>
           <ng-template mat-tab-label>
-            <mat-icon>category</mat-icon>
             Categorías
           </ng-template>
 

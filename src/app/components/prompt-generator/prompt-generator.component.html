@@ -1,29 +1,32 @@
 <div class="prompt-generator-container">
-  <!-- Header con navegación -->
-  <div class="app-header">
+  <!-- Header -->
+  <div class="header">
     <div class="header-content">
-      <div class="logo">
-        <mat-icon>auto_fix_high</mat-icon>
-        <span>PromptGenius</span>
-      </div>
+      <h1 class="app-title">PromptGenius</h1>
       
       <nav class="nav-tabs">
-        <button class="nav-tab active">
-          <mat-icon>generator</mat-icon>
+        <button 
+          mat-button 
+          [class.active]="activeTab === 'generator'"
+          (click)="activeTab = 'generator'">
           Generador
         </button>
-        <button class="nav-tab">
-          <mat-icon>history</mat-icon>
+        <button 
+          mat-button 
+          [class.active]="activeTab === 'history'"
+          (click)="activeTab = 'history'">
           Historial
         </button>
-        <button class="nav-tab">
-          <mat-icon>favorite</mat-icon>
+        <button 
+          mat-button 
+          [class.active]="activeTab === 'favorites'"
+          (click)="activeTab = 'favorites'">
           Favoritos
         </button>
       </nav>
       
       <div class="user-menu">
-        <mat-icon>account_circle</mat-icon>
+        Usuario
       </div>
     </div>
   </div>
@@ -33,7 +36,6 @@
     <!-- Sección del generador -->
     <div class="generator-section">
       <h1 class="section-title">
-        <mat-icon>auto_fix_high</mat-icon>
         Generador de Prompts IA
       </h1>
 
@@ -46,7 +48,6 @@
               {{ provider.label }}
             </mat-option>
           </mat-select>
-          <mat-icon matSuffix>smart_toy</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="category-select">
@@ -56,7 +57,6 @@
               {{ category.label }}
             </mat-option>
           </mat-select>
-          <mat-icon matSuffix>category</mat-icon>
         </mat-form-field>
       </div>
 
@@ -71,7 +71,6 @@
           placeholder="hola hazme un promt con sobre mi video extremo para youtube"
           maxlength="500">
         </textarea>
-        <mat-icon matSuffix>edit</mat-icon>
         <mat-hint align="end">{{ characterCount }}/{{ maxCharacters }}</mat-hint>
         <mat-error *ngIf="promptInput.length < 5 && promptInput.length > 0">
           Mínimo 5 caracteres
@@ -88,7 +87,6 @@
           (click)="generate()"
           [disabled]="isLoading || !promptInput.trim() || promptInput.length < 5"
           class="generate-btn">
-          <mat-icon *ngIf="!isLoading">auto_fix_high</mat-icon>
           <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
           {{ isLoading ? 'Generando...' : 'Generar Prompt' }}
         </button>
@@ -98,7 +96,6 @@
           color="warn" 
           (click)="clearForm()"
           class="clear-btn">
-          <mat-icon>clear</mat-icon>
           Limpiar
         </button>
       </div>
@@ -107,15 +104,14 @@
       <div *ngIf="generatedPrompt" class="result-section">
         <div class="result-header">
           <h3>
-            <mat-icon>lightbulb</mat-icon>
             Prompt Generado
           </h3>
           <div class="result-actions">
             <button mat-icon-button (click)="copyToClipboard(generatedPrompt)" matTooltip="Copiar">
-              <mat-icon>content_copy</mat-icon>
+              Copiar
             </button>
             <button mat-icon-button (click)="toggleFavorite({id: 'current', generated: generatedPrompt})" matTooltip="Guardar en favoritos">
-              <mat-icon>favorite_border</mat-icon>
+              Favorito
             </button>
           </div>
         </div>
@@ -134,7 +130,6 @@
             <div class="tab-watermark">historial</div>
             
             <div *ngIf="historyPrompts.length === 0" class="empty-state">
-              <mat-icon>history</mat-icon>
               <h3>No hay prompts en el historial</h3>
               <p>Los prompts generados aparecerán aquí</p>
             </div>
@@ -151,13 +146,13 @@
                   </div>
                   <div class="prompt-actions">
                     <button mat-icon-button (click)="copyToClipboard(prompt.generated)" matTooltip="Copiar">
-                      <mat-icon>content_copy</mat-icon>
+                      Copiar
                     </button>
                     <button mat-icon-button (click)="toggleFavorite(prompt)" matTooltip="Favorito">
-                      <mat-icon>{{ prompt.isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+                      {{ prompt.isFavorite ? 'Favorito' : 'No Favorito' }}
                     </button>
                     <button mat-icon-button (click)="deletePrompt(prompt, historyPrompts)" matTooltip="Eliminar">
-                      <mat-icon>delete</mat-icon>
+                      Eliminar
                     </button>
                   </div>
                 </div>
@@ -175,7 +170,6 @@
             <div class="tab-watermark">favoritos</div>
             
             <div *ngIf="favoritePrompts.length === 0" class="empty-state">
-              <mat-icon>favorite_border</mat-icon>
               <h3>No hay prompts favoritos</h3>
               <p>Los prompts marcados como favoritos aparecerán aquí</p>
             </div>
@@ -192,13 +186,13 @@
                   </div>
                   <div class="prompt-actions">
                     <button mat-icon-button (click)="copyToClipboard(prompt.generated)" matTooltip="Copiar">
-                      <mat-icon>content_copy</mat-icon>
+                      Copiar
                     </button>
                     <button mat-icon-button (click)="toggleFavorite(prompt)" matTooltip="Quitar de favoritos">
-                      <mat-icon>favorite</mat-icon>
+                      Quitar Favorito
                     </button>
                     <button mat-icon-button (click)="deletePrompt(prompt, favoritePrompts)" matTooltip="Eliminar">
-                      <mat-icon>delete</mat-icon>
+                      Eliminar
                     </button>
                   </div>
                 </div>
@@ -217,7 +211,6 @@
             
             <div class="categories-grid">
               <div *ngFor="let category of categories" class="category-card">
-                <mat-icon>{{ getCategoryIcon(category.value) }}</mat-icon>
                 <h4>{{ category.label }}</h4>
                 <p>{{ getCategoryDescription(category.value) }}</p>
                 <button mat-button color="primary" (click)="selectCategory(category.value)">

@@ -73,10 +73,6 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
               <mat-label>Contraseña</mat-label>
               <input matInput [type]="hidePassword ? 'password' : 'text'"
                      formControlName="password" placeholder="Mínimo 6 caracteres" required>
-              <button matSuffix mat-icon-button type="button"
-                      (click)="hidePassword = !hidePassword">
-                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
               <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
                 La contraseña es requerida
               </mat-error>
@@ -89,10 +85,6 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
               <mat-label>Confirmar contraseña</mat-label>
               <input matInput [type]="hideConfirmPassword ? 'password' : 'text'"
                      formControlName="confirmPassword" placeholder="Repite tu contraseña" required>
-              <button matSuffix mat-icon-button type="button"
-                      (click)="hideConfirmPassword = !hideConfirmPassword">
-                <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
               <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
                 Confirma tu contraseña
               </mat-error>

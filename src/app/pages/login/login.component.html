@@ -37,16 +37,9 @@
             placeholder="Tu contraseña"
             required
           >
-          <button 
-            mat-icon-button 
-            matSuffix 
-            (click)="togglePasswordVisibility()" 
-            type="button"
-            [attr.aria-label]="hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'"
-            [attr.aria-pressed]="hidePassword"
-          >
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
+          <mat-error *ngIf="password && password.length < 6">
+            La contraseña debe tener al menos 6 caracteres
+          </mat-error>
         </mat-form-field>
 
         <button 

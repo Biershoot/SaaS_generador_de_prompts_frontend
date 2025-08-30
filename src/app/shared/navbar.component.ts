@@ -54,7 +54,7 @@ import { Observable, map } from 'rxjs';
           <ng-container *ngIf="isAuthenticated$ | async; else authButtons">
             <button mat-icon-button [matMenuTriggerFor]="userMenu"
                     matTooltip="Menú de usuario">
-              <mat-icon>account_circle</mat-icon>
+              Usuario
             </button>
             <mat-menu #userMenu="matMenu">
               <div class="user-info">
@@ -84,7 +84,7 @@ import { Observable, map } from 'rxjs';
         <button mat-icon-button class="mobile-menu"
                 [matMenuTriggerFor]="mobileMenu"
                 *ngIf="isAuthenticated$ | async">
-          <mat-icon>menu</mat-icon>
+          Menú
         </button>
         <mat-menu #mobileMenu="matMenu" class="mobile-nav">
           <a mat-menu-item routerLink="/" routerLinkActive="active">
