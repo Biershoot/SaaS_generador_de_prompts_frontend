@@ -1,4 +1,4 @@
-# 🚀 PromptGenius - AI Prompt Generator SaaS
+# 🚀 PromptGenius - Generador de Prompts IA SaaS
 
 <div align="center">
 
@@ -8,254 +8,253 @@
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 ![Material Design](https://img.shields.io/badge/Material_Design-757575?style=for-the-badge&logo=material-design&logoColor=white)
 
-**A modern, full-stack SaaS application for generating optimized AI prompts with advanced authentication and responsive design.**
+**Una aplicación SaaS moderna y completa para generar prompts optimizados de IA con autenticación avanzada y diseño responsivo.**
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-1976D2?style=for-the-badge&logo=vercel&logoColor=white)](https://promptgenius-demo.vercel.app)
-[![Documentation](https://img.shields.io/badge/Documentation-4CAF50?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://github.com/Biershoot/SaaS_generador_de_prompts_frontend/wiki)
+[![Demo en Vivo](https://img.shields.io/badge/Demo_en_Vivo-1976D2?style=for-the-badge&logo=vercel&logoColor=white)](https://promptgenius-demo.vercel.app)
+[![Documentación](https://img.shields.io/badge/Documentación-4CAF50?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://github.com/Biershoot/SaaS_generador_de_prompts_frontend/wiki)
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## 📋 Tabla de Contenidos
 
-- [✨ Features](#-features)
-- [🛠️ Tech Stack](#️-tech-stack)
-- [🚀 Quick Start](#-quick-start)
-- [🏗️ Architecture](#️-architecture)
-- [🔐 Security Features](#-security-features)
-- [📱 Responsive Design](#-responsive-design)
-- [🎨 UI/UX Highlights](#-uiux-highlights)
-- [📊 Project Structure](#-project-structure)
-- [🔧 Development](#-development)
-- [📈 Performance](#-performance)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-
----
-
-## ✨ Features
-
-### 🎯 Core Functionality
-- **AI Prompt Generation**: Create optimized prompts for multiple AI providers (OpenAI, Claude, Gemini)
-- **Smart Categorization**: Organize prompts by category (Chat, Creative, Business, Technical, etc.)
-- **Real-time Validation**: Character counter and input validation with instant feedback
-- **History Management**: Track and manage all generated prompts
-- **Favorites System**: Save and organize your best prompts
-
-### 🔐 Advanced Authentication
-- **JWT-based Security**: Secure token-based authentication
-- **Refresh Token Strategy**: Automatic token refresh with HttpOnly cookies
-- **Route Protection**: Guarded routes with role-based access control
-- **Session Management**: Persistent login sessions with automatic validation
-
-### 📱 Modern UI/UX
-- **Dark Theme Design**: Professional dark interface with Material Design
-- **Responsive Layout**: Fully responsive across all devices
-- **Real-time Feedback**: Loading states, animations, and notifications
-- **Accessibility**: WCAG compliant with keyboard navigation support
+- [✨ Características](#-características)
+- [🛠️ Stack Tecnológico](#️-stack-tecnológico)
+- [🚀 Inicio Rápido](#-inicio-rápido)
+- [🏗️ Arquitectura](#️-arquitectura)
+- [🔐 Características de Seguridad](#-características-de-seguridad)
+- [📱 Diseño Responsivo](#-diseño-responsivo)
+- [🎨 Destacados de UI/UX](#-destacados-de-uiux)
+- [📊 Estructura del Proyecto](#-estructura-del-proyecto)
+- [🔧 Desarrollo](#-desarrollo)
+- [📈 Rendimiento](#-rendimiento)
+- [🤝 Contribución](#-contribución)
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Características
+
+### 🎯 Funcionalidad Principal
+- **Generación de Prompts IA**: Crea prompts optimizados para múltiples proveedores de IA (OpenAI, Claude, Gemini)
+- **Categorización Inteligente**: Organiza prompts por categoría (Chat, Creativo, Negocios, Técnico, etc.)
+- **Validación en Tiempo Real**: Contador de caracteres y validación de entrada con feedback instantáneo
+- **Gestión de Historial**: Rastrea y gestiona todos los prompts generados
+- **Sistema de Favoritos**: Guarda y organiza tus mejores prompts
+
+### 🔐 Autenticación Avanzada
+- **Seguridad basada en JWT**: Autenticación segura basada en tokens
+- **Estrategia de Refresh Token**: Renovación automática de tokens con cookies HttpOnly
+- **Protección de Rutas**: Rutas protegidas con control de acceso basado en roles
+- **Gestión de Sesiones**: Sesiones de login persistentes con validación automática
+
+### 📱 UI/UX Moderna
+- **Diseño de Tema Oscuro**: Interfaz profesional oscura con Material Design
+- **Diseño Responsivo**: Completamente responsivo en todos los dispositivos
+- **Feedback en Tiempo Real**: Estados de carga, animaciones y notificaciones
+- **Accesibilidad**: Compatible con WCAG y navegación por teclado
+
+---
+
+## 🛠️ Stack Tecnológico
 
 ### Frontend
-- **Angular 20.2.1** - Modern reactive framework with standalone components
-- **TypeScript 5.9.2** - Type-safe development with strict configuration
-- **Angular Material** - Professional UI components and theming
-- **RxJS** - Reactive programming for state management
-- **ESLint** - Code quality and consistency
+- **Angular 20.2.1** - Framework reactivo moderno con componentes standalone
+- **TypeScript 5.9.2** - Desarrollo con tipos seguros y configuración estricta
+- **Angular Material** - Componentes UI profesionales y temas
+- **RxJS** - Programación reactiva para gestión de estado
+- **ESLint** - Calidad de código y consistencia
 
 ### Backend
-- **Spring Boot 3.x** - Enterprise-grade Java framework
-- **Spring Security** - Comprehensive security framework
-- **JWT Authentication** - Stateless authentication with refresh tokens
-- **Spring Data JPA** - Data persistence and ORM
-- **H2 Database** - In-memory database for development
+- **Spring Boot 3.x** - Framework Java de nivel empresarial
+- **Spring Security** - Framework de seguridad integral
+- **Autenticación JWT** - Autenticación sin estado con tokens de renovación
+- **Spring Data JPA** - Persistencia de datos y ORM
+- **Base de Datos H2** - Base de datos en memoria para desarrollo
 
-### DevOps & Tools
-- **Git** - Version control with conventional commits
-- **Angular CLI** - Development and build tools
-- **Material Design Icons** - Consistent iconography
-- **Responsive Design** - Mobile-first approach
+### DevOps y Herramientas
+- **Git** - Control de versiones con commits convencionales
+- **Angular CLI** - Herramientas de desarrollo y construcción
+- **Iconos Material Design** - Iconografía consistente
+- **Diseño Responsivo** - Enfoque mobile-first
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Inicio Rápido
 
-### Prerequisites
-- Node.js 18+ and npm
-- Java 17+ and Maven
+### Prerrequisitos
+- Node.js 18+ y npm
+- Java 17+ y Maven
 - Git
 
-### Frontend Setup
+### Configuración del Frontend
 ```bash
-# Clone the repository
+# Clonar el repositorio
 git clone https://github.com/Biershoot/SaaS_generador_de_prompts_frontend.git
 cd SaaS_generador_de_prompts_frontend
 
-# Install dependencies
+# Instalar dependencias
 npm install
 
-# Start development server
+# Iniciar servidor de desarrollo
 ng serve
 
-# Open http://localhost:4200
+# Abrir http://localhost:4200
 ```
 
-### Backend Setup
+### Configuración del Backend
 ```bash
-# Navigate to backend directory
+# Navegar al directorio del backend
 cd backend
 
-# Run with Maven
+# Ejecutar con Maven
 mvn spring-boot:run
 
-# Backend will be available at http://localhost:8080
+# El backend estará disponible en http://localhost:8080
 ```
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Arquitectura
 
-### Frontend Architecture
+### Arquitectura del Frontend
 ```
 src/
 ├── app/
-│   ├── core/                 # Core services and utilities
-│   │   ├── auth.service.ts   # Authentication service
-│   │   ├── config.service.ts # Configuration management
-│   │   └── token.service.ts  # JWT token handling
-│   ├── components/           # Reusable components
-│   │   └── prompt-generator/ # Main prompt generator
-│   ├── pages/               # Page components
-│   │   ├── login/           # Authentication pages
-│   │   └── dashboard/       # Main dashboard
-│   ├── interceptors/        # HTTP interceptors
-│   ├── guards/              # Route guards
-│   └── shared/              # Shared components
-├── environments/            # Environment configuration
-└── assets/                 # Static assets
+│   ├── core/                 # Servicios y utilidades principales
+│   │   ├── auth.service.ts   # Servicio de autenticación
+│   │   ├── config.service.ts # Gestión de configuración
+│   │   └── token.service.ts  # Manejo de tokens JWT
+│   ├── components/           # Componentes reutilizables
+│   │   └── prompt-generator/ # Generador de prompts principal
+│   ├── pages/               # Componentes de página
+│   │   ├── login/           # Páginas de autenticación
+│   │   └── dashboard/       # Dashboard principal
+│   ├── interceptors/        # Interceptores HTTP
+│   ├── guards/              # Guardias de ruta
+│   └── shared/              # Componentes compartidos
+├── environments/            # Configuración de entorno
+└── assets/                 # Activos estáticos
 ```
 
-### Security Architecture
-- **JWT Access Tokens**: Stored in localStorage for API calls
-- **Refresh Tokens**: HttpOnly cookies for automatic renewal
-- **CORS Configuration**: Secure cross-origin requests
-- **Route Guards**: Protected routes with authentication checks
-- **HTTP Interceptors**: Automatic token injection and refresh
+### Arquitectura de Seguridad
+- **Tokens de Acceso JWT**: Almacenados en localStorage para llamadas API
+- **Tokens de Renovación**: Cookies HttpOnly para renovación automática
+- **Configuración CORS**: Solicitudes cross-origin seguras
+- **Guardias de Ruta**: Rutas protegidas con verificaciones de autenticación
+- **Interceptores HTTP**: Inyección automática de tokens y renovación
 
 ---
 
-## 🔐 Security Features
+## 🔐 Características de Seguridad
 
-### Authentication Flow
-1. **Login/Register**: Secure credential validation
-2. **Token Generation**: JWT access + refresh token pair
-3. **Automatic Refresh**: Seamless token renewal
-4. **Session Validation**: Backend token verification
-5. **Secure Logout**: Token cleanup and cookie removal
+### Flujo de Autenticación
+1. **Login/Registro**: Validación segura de credenciales
+2. **Generación de Tokens**: Par de tokens JWT de acceso + renovación
+3. **Renovación Automática**: Renovación fluida de tokens
+4. **Validación de Sesión**: Verificación de tokens en el backend
+5. **Logout Seguro**: Limpieza de tokens y eliminación de cookies
 
-### Security Best Practices
-- ✅ HttpOnly cookies for refresh tokens
-- ✅ CORS configuration with credentials
-- ✅ Input validation and sanitization
-- ✅ Route protection with guards
-- ✅ Secure HTTP headers
-- ✅ Token expiration handling
+### Mejores Prácticas de Seguridad
+- ✅ Cookies HttpOnly para tokens de renovación
+- ✅ Configuración CORS con credenciales
+- ✅ Validación y sanitización de entrada
+- ✅ Protección de rutas con guardias
+- ✅ Headers HTTP seguros
+- ✅ Manejo de expiración de tokens
 
 ---
 
-## 📱 Responsive Design
+## 📱 Diseño Responsivo
 
 ### Breakpoints
-- **Desktop**: > 768px - Full feature set
-- **Tablet**: 768px - Optimized layout
-- **Mobile**: < 480px - Mobile-first design
+- **Desktop**: > 768px - Conjunto completo de características
+- **Tablet**: 768px - Diseño optimizado
+- **Mobile**: < 480px - Diseño mobile-first
 
-### Mobile Features
-- Touch-friendly interface
-- Swipe gestures for navigation
-- Optimized form inputs
-- Collapsible navigation
-- Responsive typography
-
----
-
-## 🎨 UI/UX Highlights
-
-### Design System
-- **Material Design 3**: Latest design guidelines
-- **Dark Theme**: Professional dark interface
-- **Consistent Spacing**: 8px grid system
-- **Typography**: Roboto font family
-- **Color Palette**: Blue primary with semantic colors
-
-### User Experience
-- **Loading States**: Skeleton screens and spinners
-- **Animations**: Smooth transitions and micro-interactions
-- **Feedback**: Toast notifications and error handling
-- **Accessibility**: ARIA labels and keyboard navigation
-- **Performance**: Lazy loading and code splitting
+### Características Móviles
+- Interfaz táctil
+- Gestos de deslizamiento para navegación
+- Entradas de formulario optimizadas
+- Navegación colapsable
+- Tipografía responsiva
 
 ---
 
-## 📊 Project Structure
+## 🎨 Destacados de UI/UX
+
+### Sistema de Diseño
+- **Material Design 3**: Últimas directrices de diseño
+- **Tema Oscuro**: Interfaz profesional oscura
+- **Espaciado Consistente**: Sistema de cuadrícula de 8px
+- **Tipografía**: Familia de fuentes Roboto
+- **Paleta de Colores**: Azul primario con colores semánticos
+
+### Experiencia de Usuario
+- **Estados de Carga**: Pantallas skeleton y spinners
+- **Animaciones**: Transiciones suaves y micro-interacciones
+- **Feedback**: Notificaciones toast y manejo de errores
+- **Accesibilidad**: Etiquetas ARIA y navegación por teclado
+- **Rendimiento**: Carga diferida y división de código
+
+---
+
+## 📊 Estructura del Proyecto
 
 ```
 SaaS_generador_de_prompts_frontend/
 ├── src/
 │   ├── app/
-│   │   ├── core/                    # Core services
-│   │   ├── components/              # Reusable components
-│   │   ├── pages/                   # Page components
-│   │   ├── interceptors/            # HTTP interceptors
-│   │   ├── guards/                  # Route guards
-│   │   └── shared/                  # Shared components
-│   ├── environments/                # Environment configs
-│   └── assets/                      # Static assets
-├── docs/                           # Documentation
-├── README.md                       # This file
-└── package.json                    # Dependencies
+│   │   ├── core/                    # Servicios principales
+│   │   ├── components/              # Componentes reutilizables
+│   │   ├── pages/                   # Componentes de página
+│   │   ├── interceptors/            # Interceptores HTTP
+│   │   ├── guards/                  # Guardias de ruta
+│   │   └── shared/                  # Componentes compartidos
+│   ├── environments/                # Configuraciones de entorno
+│   └── assets/                      # Activos estáticos
+├── docs/                           # Documentación
+├── README.md                       # Este archivo
+└── package.json                    # Dependencias
 ```
 
 ---
 
-## 🔧 Development
+## 🔧 Desarrollo
 
-### Code Quality
+### Calidad de Código
 ```bash
-# Lint code
+# Lint del código
 npm run lint
 
-# Fix linting issues
+# Corregir problemas de linting
 npm run lint -- --fix
 
-# Run tests
+# Ejecutar tests
 npm test
 
-# Build for production
+# Construir para producción
 npm run build
 ```
 
-### Git Workflow
-- **Conventional Commits**: Structured commit messages
-- **Feature Branches**: Isolated development
-- **Pull Requests**: Code review process
-- **Semantic Versioning**: Version management
+### Flujo de Git
+- **Commits Convencionales**: Mensajes de commit estructurados
+- **Ramas de Características**: Desarrollo aislado
+- **Pull Requests**: Proceso de revisión de código
+- **Versionado Semántico**: Gestión de versiones
 
 ---
 
-## 📈 Performance
+## 📈 Rendimiento
 
-### Optimization Techniques
-- **Lazy Loading**: Route-based code splitting
-- **Tree Shaking**: Unused code elimination
-- **Bundle Optimization**: Compressed and minified builds
-- **Caching Strategy**: Browser and service worker caching
-- **Image Optimization**: WebP format and lazy loading
+### Técnicas de Optimización
+- **Carga Diferida**: División de código basada en rutas
+- **Tree Shaking**: Eliminación de código no utilizado
+- **Optimización de Bundle**: Construcciones comprimidas y minificadas
+- **Estrategia de Caché**: Caché del navegador y service worker
+- **Optimización de Imágenes**: Formato WebP y carga diferida
 
-### Performance Metrics
+### Métricas de Rendimiento
 - **First Contentful Paint**: < 1.5s
 - **Largest Contentful Paint**: < 2.5s
 - **Cumulative Layout Shift**: < 0.1
@@ -263,37 +262,31 @@ npm run build
 
 ---
 
-## 🤝 Contributing
+## 🤝 Contribución
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+¡Bienvenimos las contribuciones! Por favor, consulta nuestras [Directrices de Contribución](CONTRIBUTING.md) para más detalles.
 
-### Development Setup
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### Configuración de Desarrollo
+1. Haz fork del repositorio
+2. Crea una rama de característica
+3. Realiza tus cambios
+4. Añade tests si es aplicable
+5. Envía un pull request
 
 ---
 
-## 🙏 Acknowledgments
+## 🙏 Agradecimientos
 
-- **Angular Team** for the amazing framework
-- **Material Design** for the design system
-- **Spring Boot** for the robust backend
-- **OpenAI** for AI integration inspiration
+- **Equipo de Angular** por el increíble framework
+- **Material Design** por el sistema de diseño
+- **Spring Boot** por el robusto backend
+- **OpenAI** por la inspiración de integración de IA
 
 ---
 
 <div align="center">
 
-**Built with ❤️ by [Alejandro](https://github.com/Biershoot)**
+**Construido con ❤️ por [Alejandro](https://github.com/Biershoot)**
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/alejandro-dev)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Biershoot)
