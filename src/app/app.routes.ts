@@ -16,6 +16,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/dashboard/dashboard.component').then(c => c.DashboardComponent)
   },
   {
+    path: 'generator',
+    loadComponent: () => import('./components/prompt-generator/prompt-generator.component').then(c => c.PromptGeneratorComponent)
+  },
+  {
     path: '**',
     redirectTo: '/login'
   }

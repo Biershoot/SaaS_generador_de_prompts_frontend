@@ -40,9 +40,9 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Si ya está logueado, redirigir al dashboard
+    // Si ya está logueado, redirigir al generador de prompts
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/generator']);
     }
   }
 
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this.successMessage = `Bienvenido, ${response.fullName}!`;
         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/generator']);
         }, 1000);
       },
       error: (error) => {
