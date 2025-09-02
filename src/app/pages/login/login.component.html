@@ -5,20 +5,40 @@
         <h2 class="title-text">Iniciar Sesión</h2>
       </mat-card-title>
       <mat-card-subtitle class="login-subtitle">
-        Accede a tu cuenta para generar prompts increíbles
+        Accede con tu email o usuario para generar prompts increíbles
       </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content class="login-content">
+      <!-- Mensajes de error y éxito -->
+      <div *ngIf="errorMessage" class="error-message">
+        <mat-icon>error</mat-icon>
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="successMessage" class="success-message">
+        <mat-icon>check_circle</mat-icon>
+        {{ successMessage }}
+      </div>
+
       <!-- Botón de prueba de conectividad -->
       <div class="backend-test-container">
-        <button 
-          mat-button 
-          color="accent" 
+        <button
+          mat-button
+          color="accent"
           (click)="testBackendConnection()"
           class="test-backend-btn">
-          🔍 Probar Conexión Backend
+          🔍 Probar Conexión Backend (Puerto 8080)
         </button>
+
+        <button
+          mat-button
+          color="primary"
+          (click)="toggleTestFeatures()"
+          class="toggle-test-btn">
+          {{ showTestFeatures ? '🔧 Ocultar' : '🔧 Mostrar' }} Herramientas de Testing
+        </button>
+
         <div *ngIf="backendStatus" class="backend-status">
           <span [class]="'status-' + backendStatus.type">
             {{ backendStatus.message }}
@@ -26,23 +46,41 @@
         </div>
       </div>
 
+      <!-- Panel de herramientas de testing (colapsible) -->
+      <div *ngIf="showTestFeatures" class="test-features-panel">
+        <mat-card class="test-card">
+          <mat-card-header>
+            <mat-card-title>🧪 Herramientas de Diagnóstico</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p><strong>Endpoint de diagnóstico:</strong> POST /auth/test-login</p>
+            <p>Esta función te permite verificar si tus credenciales existen en la base de datos sin hacer login real.</p>
+            <button
+              mat-raised-button
+              color="accent"
+              (click)="testLoginDiagnostic()"
+              [disabled]="!username || !password"
+              class="diagnostic-btn">
+              🔍 Ejecutar Test de Diagnóstico
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
       <form (ngSubmit)="login()" class="auth-form">
-        <!-- Campo de Email -->
+        <!-- Campo de Usuario/Email -->
         <div class="form-field-container">
-          <mat-form-field appearance="outline" class="full-width email-field">
-            <mat-label>Correo Electrónico</mat-label>
-            <input 
-              matInput 
-              type="email" 
-              [(ngModel)]="email" 
-              name="email"
-              placeholder="ejemplo@correo.com"
+          <mat-form-field appearance="outline" class="full-width username-field">
+            <mat-label>Email o Usuario</mat-label>
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="username"
+              name="username"
+              placeholder="ejemplo@correo.com o tu_usuario"
               required
-              [class.invalid]="email && !isValidEmail(email)"
-            >
-            <mat-error *ngIf="email && !isValidEmail(email)">
-              Por favor ingresa un email válido
-            </mat-error>
+              autocomplete="username">
+            <mat-icon matSuffix>person</mat-icon>
           </mat-form-field>
         </div>
 
@@ -50,58 +88,54 @@
         <div class="form-field-container">
           <mat-form-field appearance="outline" class="full-width password-field">
             <mat-label>Contraseña</mat-label>
-            <input 
-              matInput 
+            <input
+              matInput
               type="password"
-              [(ngModel)]="password" 
+              [(ngModel)]="password"
               name="password"
               placeholder="••••••••"
               required
-            >
-            <mat-error *ngIf="password && password.length < 6">
-              La contraseña debe tener al menos 6 caracteres
-            </mat-error>
+              autocomplete="current-password">
+            <mat-icon matSuffix>lock</mat-icon>
           </mat-form-field>
         </div>
 
         <!-- Botón de Login -->
-        <div class="button-container">
-          <button 
-            mat-raised-button 
-            color="primary" 
-            type="submit" 
-            class="auth-button full-width"
-            [disabled]="loading || !email || !password || !isValidEmail(email)"
-          >
-            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-            <span *ngIf="!loading" class="button-text">Iniciar Sesión</span>
+        <div class="auth-actions">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="login-button"
+            [disabled]="loading || !username || !password">
+            <mat-icon *ngIf="loading" class="loading-icon">autorenew</mat-icon>
+            <span *ngIf="!loading">Iniciar Sesión</span>
+            <span *ngIf="loading">Iniciando sesión...</span>
           </button>
         </div>
       </form>
 
-      <!-- Información de credenciales de prueba -->
-      <div class="test-credentials">
-        <h3 class="credentials-title">Credenciales de Prueba</h3>
-        <p class="credentials-description">Usa estas credenciales para probar la aplicación:</p>
-        <div class="credentials-list">
-          <div class="credential-item">
-            <strong>Admin:</strong> admin@test.com / admin123
-          </div>
-          <div class="credential-item">
-            <strong>Usuario:</strong> user@test.com / user123
-          </div>
-          <div class="credential-item">
-            <strong>Test:</strong> test@test.com / test123
-          </div>
-        </div>
+      <!-- Enlaces adicionales -->
+      <div class="additional-links">
+        <p class="register-link">
+          ¿No tienes una cuenta?
+          <a routerLink="/register" class="link">Regístrate aquí</a>
+        </p>
+        <a href="#" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <!-- Información técnica (solo en modo desarrollo) -->
+      <div class="technical-info" *ngIf="showTestFeatures">
+        <hr>
+        <h4>📋 Información Técnica</h4>
+        <ul>
+          <li><strong>Backend URL:</strong> http://localhost:8080</li>
+          <li><strong>Login Endpoint:</strong> POST /auth/login</li>
+          <li><strong>Register Endpoint:</strong> POST /auth/register</li>
+          <li><strong>Validation Endpoint:</strong> GET /auth/validate</li>
+          <li><strong>Test Endpoint:</strong> POST /auth/test-login</li>
+        </ul>
       </div>
     </mat-card-content>
-
-    <mat-card-actions class="login-actions">
-      <div class="auth-footer">
-        <p class="footer-text">¿No tienes una cuenta?</p>
-        <a routerLink="/register" class="register-link">Regístrate aquí</a>
-      </div>
-    </mat-card-actions>
   </mat-card>
 </div>

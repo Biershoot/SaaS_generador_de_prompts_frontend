@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ConfigService {
-  private readonly baseUrl = environment.api;
+  private readonly baseUrl = environment.apiUrl;
 
   // URLs de autenticación
   get authUrls() {

@@ -9,7 +9,9 @@ import { ErrorHandlerService } from './error-handler.service';
 
 export interface User {
   username: string;
+  email: string;
   fullName: string;
+  name: string;
   role: string;
 }
 
@@ -46,61 +48,26 @@ export class AuthService {
   private tokenService = inject(TokenService);
   private errorHandler = inject(ErrorHandlerService);
 
-  // Mock data para desarrollo
-  private mockUsers = [
-    { username: 'admin@test.com', password: 'admin123', fullName: 'Administrador', role: 'admin' },
-    { username: 'user@test.com', password: 'user123', fullName: 'Usuario Demo', role: 'user' },
-    { username: 'test@test.com', password: 'test123', fullName: 'Usuario Test', role: 'user' }
-  ];
-
   constructor() {
     this.checkInitialAuthState();
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    console.log('🔐 AuthService: Intentando login con backend real en:', this.config.authUrls.login);
-    
-    // Primero intentar con el backend real
+    console.log('🔐 AuthService: Intentando login con backend:', this.config.authUrls.login);
+
     return this.http.post<AuthResponse>(this.config.authUrls.login, credentials, {
       withCredentials: true // Importante para cookies
     }).pipe(
       tap(response => {
-        console.log('✅ AuthService: Login exitoso con backend real:', response);
+        console.log('✅ AuthService: Login exitoso:', response);
         this.handleAuthResponse(response);
       }),
       catchError(err => {
         console.error('❌ AuthService: Error del backend:', err);
-        console.log('🔄 AuthService: Activando fallback mock...');
-        
-        // Si falla, usar mock authentication
-        return this.mockLogin(credentials);
+        const errorMessage = err.error?.error || 'Credenciales inválidas';
+        return throwError(() => new Error(errorMessage));
       })
     );
-  }
-
-  private mockLogin(credentials: LoginRequest): Observable<AuthResponse> {
-    const user = this.mockUsers.find(u => 
-      u.username === credentials.username && u.password === credentials.password
-    );
-
-    if (user) {
-      const mockResponse: AuthResponse = {
-        accessToken: 'mock-jwt-token-' + Date.now(),
-        username: user.username,
-        fullName: user.fullName,
-        role: user.role
-      };
-
-      return of(mockResponse).pipe(
-        delay(1000), // Simular delay de red
-        tap(response => {
-          this.handleAuthResponse(response);
-          console.log('Login mock exitoso:', response);
-        })
-      );
-    } else {
-      return throwError(() => new Error('Credenciales inválidas'));
-    }
   }
 
   register(userData: RegisterRequest): Observable<AuthResponse> {
@@ -165,15 +132,17 @@ export class AuthService {
   private handleAuthResponse(response: AuthResponse): void {
     // Guardar access token en localStorage
     localStorage.setItem('accessToken', response.accessToken);
-    
+
     // Crear objeto user y guardarlo
     const user: User = {
       username: response.username,
+      email: response.username, // Asumir que username es email
       fullName: response.fullName,
+      name: response.fullName, // Usar fullName como name
       role: response.role
     };
     localStorage.setItem('currentUser', JSON.stringify(user));
-    
+
     this.currentUserSubject.next(user);
     this.isAuthenticatedSubject.next(true);
   }
@@ -187,7 +156,7 @@ export class AuthService {
         const user = JSON.parse(userStr);
         this.currentUserSubject.next(user);
         this.isAuthenticatedSubject.next(true);
-        
+
         // Intentar validar el token con el backend
         this.validateToken().subscribe({
           error: () => {
@@ -208,11 +177,6 @@ export class AuthService {
     return this.http.get(`${this.config.authUrls.validate}`, {
       withCredentials: true
     });
-  }
-
-  // Método para obtener usuarios mock (para desarrollo)
-  getMockUsers() {
-    return this.mockUsers.map(u => ({ username: u.username, fullName: u.fullName, role: u.role }));
   }
 
   // Método para probar conectividad con el backend

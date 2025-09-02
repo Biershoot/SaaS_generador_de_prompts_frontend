@@ -30,7 +30,7 @@ export interface Prompt {
   providedIn: 'root'
 })
 export class PromptService {
-  private apiUrl = `${environment.api}/api/prompts`;
+  private apiUrl = `${environment.apiUrl}/api/prompts`;
 
   constructor(private http: HttpClient) {}
 

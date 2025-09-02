@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -9,10 +9,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { AuthService } from '../../core/auth.service';
+import { AuthService, RegisterRequest } from '../../services/auth.service';
 
 // Validador personalizado para confirmar contraseña
-function passwordMatchValidator(control: AbstractControl): Record<string, any> | null {
+function passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
   const password = control.get('password');
   const confirmPassword = control.get('confirmPassword');
 
@@ -44,47 +44,66 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
         </mat-card-header>
 
         <mat-card-content>
-          <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-                         <mat-form-field appearance="outline" class="full-width">
-               <mat-label>Nombre completo</mat-label>
-               <input matInput type="text" formControlName="fullName"
-                      placeholder="Tu nombre completo" required>
-               <mat-error *ngIf="registerForm.get('fullName')?.hasError('required')">
-                 El nombre es requerido
-               </mat-error>
-               <mat-error *ngIf="registerForm.get('fullName')?.hasError('minlength')">
-                 Mínimo 2 caracteres
-               </mat-error>
-             </mat-form-field>
+          <!-- Mensajes de error y éxito -->
+          <div *ngIf="errorMessage" class="error-message">
+            <mat-icon>error</mat-icon>
+            {{ errorMessage }}
+          </div>
 
+          <div *ngIf="successMessage" class="success-message">
+            <mat-icon>check_circle</mat-icon>
+            {{ successMessage }}
+          </div>
+
+          <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+            <!-- Campo de Nombre Completo -->
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Correo electrónico</mat-label>
-              <input matInput type="email" formControlName="email"
-                     placeholder="tu@email.com" required>
-              <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
-                El correo es requerido
+              <mat-label>Nombre Completo</mat-label>
+              <input matInput type="text" formControlName="fullName"
+                     placeholder="Tu nombre completo" required>
+              <mat-icon matSuffix>person</mat-icon>
+              <mat-error *ngIf="registerForm.get('fullName')?.hasError('required')">
+                El nombre es requerido
               </mat-error>
-              <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
-                Ingresa un correo válido
+              <mat-error *ngIf="registerForm.get('fullName')?.hasError('minlength')">
+                El nombre debe tener al menos 2 caracteres
               </mat-error>
             </mat-form-field>
 
+            <!-- Campo de Email -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Correo Electrónico</mat-label>
+              <input matInput type="email" formControlName="email"
+                     placeholder="ejemplo@correo.com" required>
+              <mat-icon matSuffix>email</mat-icon>
+              <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+                El email es requerido
+              </mat-error>
+              <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
+                Ingresa un email válido
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Campo de Contraseña -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Contraseña</mat-label>
-              <input matInput [type]="hidePassword ? 'password' : 'text'"
-                     formControlName="password" placeholder="Mínimo 6 caracteres" required>
+              <input matInput type="password" formControlName="password"
+                     placeholder="••••••••" required>
+              <mat-icon matSuffix>lock</mat-icon>
               <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
                 La contraseña es requerida
               </mat-error>
               <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
-                Mínimo 6 caracteres
+                La contraseña debe tener al menos 6 caracteres
               </mat-error>
             </mat-form-field>
 
+            <!-- Campo de Confirmar Contraseña -->
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Confirmar contraseña</mat-label>
-              <input matInput [type]="hideConfirmPassword ? 'password' : 'text'"
-                     formControlName="confirmPassword" placeholder="Repite tu contraseña" required>
+              <mat-label>Confirmar Contraseña</mat-label>
+              <input matInput type="password" formControlName="confirmPassword"
+                     placeholder="••••••••" required>
+              <mat-icon matSuffix>lock_outline</mat-icon>
               <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
                 Confirma tu contraseña
               </mat-error>
@@ -93,48 +112,52 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
               </mat-error>
             </mat-form-field>
 
+            <!-- Botón de Registro -->
             <div class="auth-actions">
               <button mat-raised-button color="primary" type="submit"
-                      [disabled]="loading || registerForm.invalid" class="auth-button">
-                <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-                {{ loading ? 'Creando cuenta...' : 'Crear Cuenta' }}
+                      [disabled]="registerForm.invalid || loading"
+                      class="register-button">
+                <mat-icon *ngIf="loading" class="loading-icon">autorenew</mat-icon>
+                <span *ngIf="!loading">Crear Cuenta</span>
+                <span *ngIf="loading">Creando cuenta...</span>
               </button>
             </div>
           </form>
-        </mat-card-content>
 
-        <mat-card-actions>
-          <div class="auth-footer">
-            <p>¿Ya tienes una cuenta?</p>
-            <a mat-button color="primary" routerLink="/login">
-              Iniciar Sesión
-            </a>
+          <!-- Enlaces adicionales -->
+          <div class="additional-links">
+            <p class="login-link">
+              ¿Ya tienes una cuenta?
+              <a routerLink="/login" class="link">Inicia sesión aquí</a>
+            </p>
           </div>
-        </mat-card-actions>
+        </mat-card-content>
       </mat-card>
     </div>
   `,
   styles: [`
     .auth-container {
-      min-height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      align-items: center;
+      min-height: 100vh;
       padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .auth-card {
-      max-width: 400px;
       width: 100%;
+      max-width: 450px;
+      margin: 0 auto;
       box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      border-radius: 16px;
     }
 
     .auth-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1.5rem;
+      text-align: center;
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 8px;
     }
 
     .full-width {
@@ -143,97 +166,165 @@ function passwordMatchValidator(control: AbstractControl): Record<string, any> |
     }
 
     .auth-actions {
-      margin-top: 16px;
-      margin-bottom: 16px;
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
     }
 
-    .auth-button {
+    .register-button {
       width: 100%;
       height: 48px;
       font-size: 16px;
+      font-weight: 500;
     }
 
-    .auth-footer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
+    .loading-icon {
+      animation: spin 1s linear infinite;
     }
 
-    .auth-footer p {
-      margin: 0;
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .additional-links {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .login-link {
+      margin: 8px 0;
       color: #666;
     }
 
-    @media (max-width: 480px) {
-      .auth-container {
-        padding: 16px;
-      }
+    .link {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
 
-      .auth-card {
-        max-width: none;
-      }
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      display: flex;
+      align-items: center;
+      color: #f44336;
+      background: #ffebee;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .error-message mat-icon {
+      margin-right: 8px;
+    }
+
+    .success-message {
+      display: flex;
+      align-items: center;
+      color: #4caf50;
+      background: #e8f5e8;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .success-message mat-icon {
+      margin-right: 8px;
     }
   `]
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   loading = false;
-  hidePassword = true;
-  hideConfirmPassword = true;
+  errorMessage = '';
+  successMessage = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private snack: MatSnackBar
-  ) {}
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
-  ngOnInit() {
-             this.registerForm = this.fb.group({
-           fullName: ['', [Validators.required, Validators.minLength(2)]],
-           email: ['', [Validators.required, Validators.email]],
-           password: ['', [Validators.required, Validators.minLength(6)]],
-           confirmPassword: ['', [Validators.required]]
-         }, { validators: passwordMatchValidator });
-
-    // Si ya está autenticado, redirigir
-    if (this.authService.isAuthenticated()) {
+  ngOnInit(): void {
+    // Si ya está logueado, redirigir al dashboard
+    if (this.authService.isLoggedIn()) {
       this.router.navigate(['/dashboard']);
+      return;
     }
+
+    this.registerForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]]
+    }, { validators: passwordMatchValidator });
   }
 
-  onRegister() {
+  onRegister(): void {
     if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
+      this.markFormGroupTouched();
       return;
     }
 
     this.loading = true;
-         const { fullName, email, password, confirmPassword } = this.registerForm.value;
-     const userData = { fullName, email, password, confirmPassword };
+    this.errorMessage = '';
+    this.successMessage = '';
 
-    this.authService.register(userData).subscribe({
+    const formValue = this.registerForm.value;
+    const registerData: RegisterRequest = {
+      email: formValue.email,
+      password: formValue.password,
+      confirmPassword: formValue.confirmPassword,
+      fullName: formValue.fullName
+    };
+
+    this.authService.register(registerData).subscribe({
       next: (response) => {
         this.loading = false;
-        this.snack.open('¡Cuenta creada exitosamente! Bienvenido.', 'OK', {
+        this.successMessage = `¡Bienvenido, ${response.fullName}! Tu cuenta ha sido creada exitosamente.`;
+
+        this.snackBar.open('Cuenta creada exitosamente', 'Cerrar', {
           duration: 3000,
-          horizontalPosition: 'end',
-          verticalPosition: 'top'
+          panelClass: ['success-snackbar']
         });
-        this.router.navigate(['/dashboard']);
+
+        // Redirigir al dashboard después de un breve delay
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 2000);
       },
       error: (error) => {
         this.loading = false;
-        console.error('Register error:', error);
-        const errorMessage = error.error?.message || 'Error al crear la cuenta. Intenta nuevamente.';
-        this.snack.open(errorMessage, 'Cerrar', {
+        console.error('Error en registro:', error);
+        this.errorMessage = this.getErrorMessage(error.message);
+
+        this.snackBar.open(this.errorMessage, 'Cerrar', {
           duration: 5000,
-          horizontalPosition: 'end',
-          verticalPosition: 'top'
+          panelClass: ['error-snackbar']
         });
       }
+    });
+  }
+
+  private getErrorMessage(errorMessage: string): string {
+    switch (errorMessage) {
+      case 'El correo electrónico ya está registrado':
+        return 'Ya existe una cuenta con ese email. Intenta iniciar sesión.';
+      case 'Las contraseñas no coinciden':
+        return 'Las contraseñas ingresadas no coinciden.';
+      default:
+        return 'Error al crear la cuenta. Verifica que el backend esté ejecutándose.';
+    }
+  }
+
+  private markFormGroupTouched(): void {
+    Object.keys(this.registerForm.controls).forEach(field => {
+      const control = this.registerForm.get(field);
+      control?.markAsTouched({ onlySelf: true });
     });
   }
 }
