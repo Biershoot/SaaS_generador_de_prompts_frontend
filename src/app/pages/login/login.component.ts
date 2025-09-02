@@ -28,13 +28,11 @@ import { MatIconModule } from '@angular/material/icon';
   ]
 })
 export class LoginComponent implements OnInit {
-  username: string = ''; // Cambiado de 'email' a 'username' para coincidir con el backend
+  username: string = '';
   password: string = '';
   loading: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
-  backendStatus: { type: string; message: string } | null = null;
-  showTestFeatures: boolean = false; // Para mostrar/ocultar funciones de testing
 
   constructor(
     private authService: AuthService,
@@ -64,7 +62,7 @@ export class LoginComponent implements OnInit {
     this.successMessage = '';
 
     const credentials: LoginRequest = {
-      username: this.username, // Puede ser email o username
+      username: this.username,
       password: this.password
     };
 
@@ -82,88 +80,6 @@ export class LoginComponent implements OnInit {
         this.errorMessage = this.getErrorMessage(error.message);
       }
     });
-  }
-
-  testBackendConnection(): void {
-    this.backendStatus = null;
-
-    // Primero probar con OPTIONS request
-    this.authService.testBackendConnection().subscribe({
-      next: () => {
-        this.backendStatus = {
-          type: 'success',
-          message: '✅ Backend Spring Boot conectado correctamente (Puerto 8080)'
-        };
-      },
-      error: () => {
-        // Si falla OPTIONS, probar health check
-        this.authService.checkBackendHealth().subscribe({
-          next: (response) => {
-            this.backendStatus = {
-              type: 'success',
-              message: `✅ Backend disponible: ${response.message}`
-            };
-          },
-          error: () => {
-            this.backendStatus = {
-              type: 'error',
-              message: '❌ No se pudo conectar con el backend Spring Boot en http://localhost:8080'
-            };
-          }
-        });
-      }
-    });
-  }
-
-  // Función para testing de diagnóstico
-  testLoginDiagnostic(): void {
-    if (!this.username || !this.password) {
-      this.errorMessage = 'Ingresa credenciales para ejecutar el test de diagnóstico';
-      return;
-    }
-
-    const credentials: LoginRequest = {
-      username: this.username,
-      password: this.password
-    };
-
-    this.authService.testLogin(credentials).subscribe({
-      next: (result) => {
-        console.log('🔍 Resultado del test de diagnóstico:', result);
-
-        let message = '📋 Diagnóstico:\n';
-        message += `Usuario encontrado por username: ${result.userFoundByUsername}\n`;
-        message += `Usuario encontrado por email: ${result.userFoundByEmail}\n`;
-        message += `Username en BD: ${result.usernameFromDB}\n`;
-        message += `Email en BD: ${result.emailFromDB}\n`;
-        message += `Contraseña coincide: ${result.passwordMatch}`;
-
-        alert(message);
-
-        if (result.passwordMatch) {
-          this.backendStatus = {
-            type: 'success',
-            message: '✅ Credenciales válidas - puedes hacer login'
-          };
-        } else {
-          this.backendStatus = {
-            type: 'error',
-            message: '❌ Credenciales inválidas'
-          };
-        }
-      },
-      error: (error) => {
-        console.error('Error en test de diagnóstico:', error);
-        this.backendStatus = {
-          type: 'error',
-          message: '❌ Error en el test de diagnóstico'
-        };
-      }
-    });
-  }
-
-  toggleTestFeatures(): void {
-    this.showTestFeatures = !this.showTestFeatures;
   }
 
   private getErrorMessage(errorMessage: string): string {

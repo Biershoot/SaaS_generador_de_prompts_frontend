@@ -21,52 +21,6 @@
         {{ successMessage }}
       </div>
 
-      <!-- Botón de prueba de conectividad -->
-      <div class="backend-test-container">
-        <button
-          mat-button
-          color="accent"
-          (click)="testBackendConnection()"
-          class="test-backend-btn">
-          🔍 Probar Conexión Backend (Puerto 8080)
-        </button>
-
-        <button
-          mat-button
-          color="primary"
-          (click)="toggleTestFeatures()"
-          class="toggle-test-btn">
-          {{ showTestFeatures ? '🔧 Ocultar' : '🔧 Mostrar' }} Herramientas de Testing
-        </button>
-
-        <div *ngIf="backendStatus" class="backend-status">
-          <span [class]="'status-' + backendStatus.type">
-            {{ backendStatus.message }}
-          </span>
-        </div>
-      </div>
-
-      <!-- Panel de herramientas de testing (colapsible) -->
-      <div *ngIf="showTestFeatures" class="test-features-panel">
-        <mat-card class="test-card">
-          <mat-card-header>
-            <mat-card-title>🧪 Herramientas de Diagnóstico</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p><strong>Endpoint de diagnóstico:</strong> POST /auth/test-login</p>
-            <p>Esta función te permite verificar si tus credenciales existen en la base de datos sin hacer login real.</p>
-            <button
-              mat-raised-button
-              color="accent"
-              (click)="testLoginDiagnostic()"
-              [disabled]="!username || !password"
-              class="diagnostic-btn">
-              🔍 Ejecutar Test de Diagnóstico
-            </button>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
       <form (ngSubmit)="login()" class="auth-form">
         <!-- Campo de Usuario/Email -->
         <div class="form-field-container">
@@ -122,19 +76,6 @@
           <a routerLink="/register" class="link">Regístrate aquí</a>
         </p>
         <a href="#" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
-      </div>
-
-      <!-- Información técnica (solo en modo desarrollo) -->
-      <div class="technical-info" *ngIf="showTestFeatures">
-        <hr>
-        <h4>📋 Información Técnica</h4>
-        <ul>
-          <li><strong>Backend URL:</strong> http://localhost:8080</li>
-          <li><strong>Login Endpoint:</strong> POST /auth/login</li>
-          <li><strong>Register Endpoint:</strong> POST /auth/register</li>
-          <li><strong>Validation Endpoint:</strong> GET /auth/validate</li>
-          <li><strong>Test Endpoint:</strong> POST /auth/test-login</li>
-        </ul>
       </div>
     </mat-card-content>
   </mat-card>

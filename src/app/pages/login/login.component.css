@@ -79,38 +79,6 @@
   width: 20px;
 }
 
-/* Backend test */
-.backend-test-container {
-  margin-bottom: 24px;
-  text-align: center;
-}
-
-.test-backend-btn {
-  margin-bottom: 12px;
-}
-
-.backend-status {
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.status-success {
-  color: #2e7d32;
-  background-color: #e8f5e8;
-}
-
-.status-warning {
-  color: #f57c00;
-  background-color: #fff8e1;
-}
-
-.status-error {
-  color: #d32f2f;
-  background-color: #ffebee;
-}
-
 /* Formulario */
 .auth-form {
   margin-bottom: 24px;
@@ -124,11 +92,17 @@
   width: 100%;
 }
 
-.button-container {
+.username-field,
+.password-field {
+  margin-bottom: 16px;
+}
+
+.auth-actions {
   margin-top: 24px;
 }
 
-.auth-button {
+.login-button {
+  width: 100%;
   height: 48px;
   font-size: 16px;
   font-weight: 600;
@@ -136,103 +110,49 @@
   position: relative;
 }
 
-.auth-button[disabled] {
+.login-button[disabled] {
   opacity: 0.6;
 }
 
-.button-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.loading-icon {
+  animation: spin 1s linear infinite;
 }
 
-/* Credenciales de prueba */
-.test-credentials {
-  background: #f5f5f5;
-  padding: 20px;
-  border-radius: 12px;
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Enlaces adicionales */
+.additional-links {
+  text-align: center;
   margin-top: 24px;
 }
 
-.credentials-title {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-}
-
-.credentials-description {
-  margin: 0 0 16px 0;
-  font-size: 14px;
-  color: #666;
-}
-
-.credentials-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.credential-item {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px 16px;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
-}
-
-.credential-item:hover {
-  background: #f0f0f0;
-  border-color: #bbb;
-}
-
-.credential-item:focus {
-  outline: 2px solid #667eea;
-  outline-offset: 2px;
-}
-
-.credentials-note {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font-size: 12px;
-  color: #888;
-}
-
-/* Footer */
-.login-actions {
-  padding: 0 24px 24px 24px;
-}
-
-.auth-footer {
-  text-align: center;
-}
-
-.footer-text {
-  margin: 0 0 8px 0;
-  color: #666;
-  font-size: 14px;
-}
-
 .register-link {
+  margin-bottom: 12px;
+  display: block;
+}
+
+.register-link .link {
   color: #667eea;
   text-decoration: none;
   font-weight: 600;
 }
 
-.register-link:hover {
+.register-link .link:hover {
   text-decoration: underline;
 }
 
-/* Validaciones */
-.invalid {
-  border-color: #f44336 !important;
+.forgot-password-link {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+  color: #333;
 }
 
 /* Responsive */
