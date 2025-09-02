@@ -148,6 +148,11 @@ import { Observable, map } from 'rxjs';
       letter-spacing: -0.5px;
     }
 
+    /* Fuerza texto blanco en todos los botones/labels del navbar */
+    .navbar :where(.mat-mdc-button, .mat-mdc-icon-button, .mdc-button__label, .mat-mdc-menu-item-text, a, button) {
+      color: #fff !important;
+    }
+
     .nav-links {
       display: flex;
       align-items: center;
