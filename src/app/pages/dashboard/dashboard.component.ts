@@ -19,6 +19,9 @@ import { MatIconModule } from '@angular/material/icon';
         </mat-card-header>
         <mat-card-content>
           <p>Has iniciado sesión correctamente. Aquí puedes acceder a todas las funcionalidades de la aplicación.</p>
+          <div class="actions">
+            <button mat-raised-button color="primary" (click)="goToGenerator()">Ir al Generador</button>
+          </div>
           <div *ngIf="currentUser" class="user-info">
             <h3>Información del usuario:</h3>
             <p><strong>Email:</strong> {{ currentUser.email }}</p>
@@ -27,7 +30,6 @@ import { MatIconModule } from '@angular/material/icon';
         </mat-card-content>
         <mat-card-actions>
           <button mat-raised-button color="warn" (click)="logout()">
-            <mat-icon>logout</mat-icon>
             Cerrar Sesión
           </button>
         </mat-card-actions>
@@ -47,6 +49,7 @@ import { MatIconModule } from '@angular/material/icon';
       max-width: 500px;
       width: 100%;
     }
+    .actions { margin-top: 8px; }
     .user-info {
       background: #f5f5f5;
       padding: 16px;
@@ -70,5 +73,9 @@ export class DashboardComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  goToGenerator(): void {
+    this.router.navigate(['/generator']);
   }
 }
