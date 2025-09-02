@@ -292,10 +292,8 @@ export class RegisterComponent implements OnInit {
           panelClass: ['success-snackbar']
         });
 
-        // Redirigir al dashboard después de un breve delay
-        setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 2000);
+        // Redirigir al generador de prompts después de crear la cuenta
+        this.router.navigate(['/generator']);
       },
       error: (error) => {
         this.loading = false;
