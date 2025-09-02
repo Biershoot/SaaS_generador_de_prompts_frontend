@@ -61,7 +61,6 @@ function passwordMatchValidator(control: AbstractControl): { [key: string]: bool
               <mat-label>Nombre Completo</mat-label>
               <input matInput type="text" formControlName="fullName"
                      placeholder="Tu nombre completo" required>
-              <mat-icon matSuffix>person</mat-icon>
               <mat-error *ngIf="registerForm.get('fullName')?.hasError('required')">
                 El nombre es requerido
               </mat-error>
@@ -75,7 +74,6 @@ function passwordMatchValidator(control: AbstractControl): { [key: string]: bool
               <mat-label>Correo Electrónico</mat-label>
               <input matInput type="email" formControlName="email"
                      placeholder="ejemplo@correo.com" required>
-              <mat-icon matSuffix>email</mat-icon>
               <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
                 El email es requerido
               </mat-error>
@@ -89,7 +87,6 @@ function passwordMatchValidator(control: AbstractControl): { [key: string]: bool
               <mat-label>Contraseña</mat-label>
               <input matInput type="password" formControlName="password"
                      placeholder="••••••••" required>
-              <mat-icon matSuffix>lock</mat-icon>
               <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
                 La contraseña es requerida
               </mat-error>
@@ -103,7 +100,6 @@ function passwordMatchValidator(control: AbstractControl): { [key: string]: bool
               <mat-label>Confirmar Contraseña</mat-label>
               <input matInput type="password" formControlName="confirmPassword"
                      placeholder="••••••••" required>
-              <mat-icon matSuffix>lock_outline</mat-icon>
               <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
                 Confirma tu contraseña
               </mat-error>
@@ -250,12 +246,7 @@ export class RegisterComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
-    // Si ya está logueado, redirigir al dashboard
-    if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']);
-      return;
-    }
-
+    // Mostrar siempre el formulario de registro
     this.registerForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
