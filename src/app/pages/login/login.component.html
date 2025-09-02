@@ -10,6 +10,22 @@
     </mat-card-header>
 
     <mat-card-content class="login-content">
+      <!-- Botón de prueba de conectividad -->
+      <div class="backend-test-container">
+        <button 
+          mat-button 
+          color="accent" 
+          (click)="testBackendConnection()"
+          class="test-backend-btn">
+          🔍 Probar Conexión Backend
+        </button>
+        <div *ngIf="backendStatus" class="backend-status">
+          <span [class]="'status-' + backendStatus.type">
+            {{ backendStatus.message }}
+          </span>
+        </div>
+      </div>
+
       <form (ngSubmit)="login()" class="auth-form">
         <!-- Campo de Email -->
         <div class="form-field-container">

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { tap, catchError, delay } from 'rxjs/operators';
+import { tap, catchError, delay, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ConfigService } from './config.service';
 import { TokenService } from './token.service';
@@ -58,13 +58,20 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
+    console.log('🔐 AuthService: Intentando login con backend real en:', this.config.authUrls.login);
+    
     // Primero intentar con el backend real
     return this.http.post<AuthResponse>(this.config.authUrls.login, credentials, {
       withCredentials: true // Importante para cookies
     }).pipe(
-      tap(response => this.handleAuthResponse(response)),
+      tap(response => {
+        console.log('✅ AuthService: Login exitoso con backend real:', response);
+        this.handleAuthResponse(response);
+      }),
       catchError(err => {
-        console.log('Backend no disponible, usando autenticación mock');
+        console.error('❌ AuthService: Error del backend:', err);
+        console.log('🔄 AuthService: Activando fallback mock...');
+        
         // Si falla, usar mock authentication
         return this.mockLogin(credentials);
       })
@@ -206,5 +213,27 @@ export class AuthService {
   // Método para obtener usuarios mock (para desarrollo)
   getMockUsers() {
     return this.mockUsers.map(u => ({ username: u.username, fullName: u.fullName, role: u.role }));
+  }
+
+  // Método para probar conectividad con el backend
+  testBackendConnection(): Observable<any> {
+    console.log('🔍 AuthService: Probando conectividad con backend...');
+    return this.http.get(`${this.config.authUrls.validate}`, {
+      withCredentials: true
+    }).pipe(
+      tap(() => console.log('✅ AuthService: Backend responde correctamente')),
+      catchError(err => {
+        console.error('❌ AuthService: Backend no responde:', err);
+        throw err;
+      })
+    );
+  }
+
+  // Método para verificar si el backend está disponible
+  isBackendAvailable(): Observable<boolean> {
+    return this.testBackendConnection().pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 }

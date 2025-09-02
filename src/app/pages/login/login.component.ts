@@ -34,12 +34,44 @@ export class LoginComponent {
   password = '';
   hidePassword = true;
   loading = false;
+  backendStatus: { type: 'success' | 'error' | 'info', message: string } | null = null;
 
   constructor(
     private authService: AuthService, 
     private router: Router,
     private snackBar: MatSnackBar
   ) {}
+
+  testBackendConnection() {
+    console.log('🔍 Probando conectividad con el backend...');
+    this.backendStatus = { type: 'info', message: 'Probando conexión...' };
+    
+    this.authService.testBackendConnection().subscribe({
+      next: () => {
+        this.backendStatus = { 
+          type: 'success', 
+          message: '✅ Backend conectado correctamente' 
+        };
+        this.snackBar.open('Backend conectado correctamente', 'OK', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top'
+        });
+      },
+      error: (err) => {
+        console.error('❌ Error de conectividad:', err);
+        this.backendStatus = { 
+          type: 'error', 
+          message: `❌ Error de conexión: ${err.status || 'Desconocido'}` 
+        };
+        this.snackBar.open('Error de conexión con el backend', 'Cerrar', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top'
+        });
+      }
+    });
+  }
 
   login() {
     if (!this.email || !this.password) {
@@ -52,9 +84,12 @@ export class LoginComponent {
     }
 
     this.loading = true;
+    console.log('🔐 Intentando login con:', { username: this.email, password: '***' });
+    
     this.authService.login({ username: this.email, password: this.password }).subscribe({
       next: (res) => {
         this.loading = false;
+        console.log('✅ Login exitoso:', res);
         this.snackBar.open('¡Bienvenido!', 'OK', {
           duration: 2000,
           horizontalPosition: 'end',
@@ -64,10 +99,41 @@ export class LoginComponent {
       },
       error: (err) => {
         this.loading = false;
-        console.error('Login error:', err);
-        const errorMessage = err.error?.message || 'Credenciales inválidas. Intenta nuevamente.';
+        console.error('❌ Error detallado del login:', err);
+        
+        // Mostrar información detallada del error
+        let errorMessage = 'Error al iniciar sesión';
+        
+        if (err.status) {
+          console.log(`📊 Status HTTP: ${err.status}`);
+          errorMessage += ` (Status: ${err.status})`;
+        }
+        
+        if (err.error?.message) {
+          console.log(`📝 Mensaje del backend: ${err.error.message}`);
+          errorMessage = err.error.message;
+        } else if (err.message) {
+          console.log(`📝 Mensaje de error: ${err.message}`);
+          errorMessage = err.message;
+        }
+        
+        if (err.error?.error) {
+          console.log(`🔍 Error interno:`, err.error.error);
+        }
+        
+        // Mostrar mensaje específico según el tipo de error
+        if (err.status === 0) {
+          errorMessage = 'No se puede conectar con el backend. Verifica que esté ejecutándose.';
+        } else if (err.status === 401) {
+          errorMessage = 'Credenciales incorrectas. Verifica tu email y contraseña.';
+        } else if (err.status === 500) {
+          errorMessage = 'Error interno del servidor. Contacta al administrador.';
+        } else if (err.status === 404) {
+          errorMessage = 'Endpoint no encontrado. Verifica la configuración del backend.';
+        }
+        
         this.snackBar.open(errorMessage, 'Cerrar', {
-          duration: 5000,
+          duration: 8000,
           horizontalPosition: 'end',
           verticalPosition: 'top'
         });
