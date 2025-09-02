@@ -1,32 +1,35 @@
-# 🚀 Generador de Prompts - Frontend Angular
+# 🎬 Prompts Genius — Generador de Prompts para YouTubers (Frontend Angular)
+
+## 📌 ¿Qué problemática resuelve?
+Los creadores de contenido en YouTube gastan mucho tiempo pensando títulos, descripciones, ganchos, ideas de miniaturas y llamados a la acción. Además, es difícil mantener un estilo consistente y optimizado para SEO en cada video.
+
+**Prompts Genius** resuelve este problema generando prompts profesionales y listos para usar con modelos de IA (OpenAI, Claude, Gemini, etc.) enfocados específicamente en contenido de YouTube: títulos irresistibles, descripciones SEO, capítulos/temporalidades, scripts cortos, ideas de miniaturas, ganchos de apertura y más.
+
+## 🎯 Enfoque: YouTubers y Creadores de Contenido
+- Pensado para YouTubers, editores y equipos de contenido.
+- Ahorra tiempo en brainstorming, mantiene consistencia y mejora el CTR y el alcance.
+- Útil tanto para canales nuevos como para creadores experimentados que buscan escalar producción.
 
 ## 📋 Descripción
+Aplicación web moderna para crear y organizar prompts de IA de forma rápida, clara y eficiente. Desarrollada con Angular 20, Angular Material y arquitectura standalone.
 
-Aplicación web moderna para generar prompts de IA de manera intuitiva y eficiente. Desarrollada con Angular 20, Material Design y arquitectura standalone.
-
-## ✨ Características
-
-- 🔐 **Autenticación JWT** con refresh tokens automáticos
-- 🎨 **Interfaz moderna** con Material Design
-- 📱 **Diseño responsivo** para todos los dispositivos
-- 🔄 **Generación de prompts** con múltiples modelos de IA
-- 💾 **Historial y favoritos** de prompts generados
-- 🎯 **Categorización inteligente** de prompts
-- ⚡ **Arquitectura standalone** de Angular 20
+## ✨ Características clave
+- 🔐 Autenticación JWT con refresh automático
+- 🧠 Generación y organización de prompts para YouTube (títulos, descripciones, capítulos, ganchos, miniaturas)
+- 📚 Historial y favoritos para reutilizar prompts efectivos
+- 🏷️ Categorías por tipo de contenido (tutoriales, vlogs, educación, gaming, reviews, shorts)
+- 🎨 UI moderna y responsiva con Material Design
 
 ## 🛠️ Tecnologías
-
-- **Frontend**: Angular 20.2.1
-- **UI Framework**: Angular Material
-- **Lenguaje**: TypeScript 5.9.2
-- **Estado**: RxJS con BehaviorSubject
-- **Autenticación**: JWT con HttpOnly cookies
-- **Estilos**: CSS Grid + Flexbox + Material Design
+- Frontend: Angular 20.2.1
+- UI: Angular Material
+- Lenguaje: TypeScript 5.9.2
+- Estado: RxJS (BehaviorSubject)
+- Autenticación: JWT con HttpOnly cookies
 
 ## 🚀 Instalación
-
 ### Prerrequisitos
-- Node.js 18+ 
+- Node.js 18+
 - npm 9+
 
 ### Pasos
@@ -45,8 +48,13 @@ ng serve
 # http://localhost:4200
 ```
 
-## 📁 Estructura del Proyecto
+## 🧭 Flujo para YouTubers (recomendado)
+1) Elige proveedor de IA y categoría de contenido (p. ej., “Educación” o “Shorts”).
+2) Describe tu video en 1–2 líneas.
+3) Genera prompts listos para: título, descripción SEO, ganchos, capítulos, idea de miniatura y CTA.
+4) Guarda en favoritos los prompts que mejor funcionen y reutilízalos en próximos videos.
 
+## 📁 Estructura del Proyecto
 ```
 src/
 ├── app/
@@ -57,195 +65,52 @@ src/
 │   ├── guards/               # Guards de autenticación
 │   ├── interceptors/         # Interceptores HTTP
 │   └── shared/               # Componentes compartidos
-├── assets/                   # Imágenes, iconos, estilos
-└── environments/             # Configuración por ambiente
+└── assets/                   # Imágenes, iconos, estilos
 ```
 
-## 🔐 Autenticación
+## 🔐 Autenticación (resumen)
+- Endpoints: login, register, refresh, logout, validate
+- Estrategia: access token en memoria + refresh token en cookie HttpOnly
+- Interceptor con reintento automático ante 401
 
-### Endpoints
-- `POST /auth/register` - Registro de usuario
-- `POST /auth/login` - Inicio de sesión
-- `POST /auth/refresh` - Renovación de token
-- `POST /auth/logout` - Cierre de sesión
-- `GET /auth/validate` - Validación de token
+## 🎨 Componentes principales
+- Login: formulario simple y seguro
+- Prompt Generator: generación, contador de caracteres, categorías, historial/favoritos
 
-### Estrategia de Seguridad
-- **Access Token**: Almacenado en memoria (localStorage como fallback)
-- **Refresh Token**: HttpOnly cookie para máxima seguridad
-- **Interceptores**: Manejo automático de 401 y renovación de tokens
-- **Guards**: Protección de rutas autenticadas
-
-## 🎨 Componentes Principales
-
-### Login Component
-- Formulario de autenticación con validaciones
-- Prueba de conectividad con backend
-- Manejo de errores específicos por HTTP status
-- Diseño Material Design responsivo
-
-### Prompt Generator
-- Generación de prompts con IA
-- Historial de prompts generados
-- Sistema de favoritos
-- Categorización por tipo de contenido
-- Contador de caracteres en tiempo real
-
-### Dashboard
-- Vista general del usuario
-- Navegación a funcionalidades principales
-- Estadísticas de uso
-
-## 🔧 Configuración
-
-### Variables de Entorno
+## 🔧 Configuración rápida
 ```typescript
 // environment.ts
 export const environment = {
   production: false,
-  api: 'http://localhost:8080'  // URL del backend
+  api: 'http://localhost:8080'
 };
 ```
-
-### CORS
-El backend debe estar configurado para permitir:
-- **Origen**: `http://localhost:4200`
-- **Credenciales**: `true`
-- **Métodos**: GET, POST, PUT, DELETE, OPTIONS
+CORS del backend: permitir origen `http://localhost:4200` con credenciales.
 
 ## 📱 Responsive Design
+- Mobile First, CSS Grid + Flexbox, breakpoints adaptados
 
-- **Mobile First**: Diseño optimizado para móviles
-- **Breakpoints**: xs, sm, md, lg, xl
-- **Grid System**: CSS Grid para layouts complejos
-- **Flexbox**: Para alineaciones y espaciado
-
-## 🧪 Testing
-
+## 🧪 Scripts útiles
 ```bash
-# Ejecutar tests unitarios
-ng test
-
-# Ejecutar tests e2e
-ng e2e
-
-# Generar reporte de cobertura
-ng test --code-coverage
+npm run start   # ng serve
+npm run build   # ng build
+npm run test    # ng test
+npm run lint    # ng lint
 ```
 
-## 🚀 Build y Deploy
+## 📝 Ideas de categorías orientadas a YouTube
+- Títulos y ganchos
+- Descripciones SEO y hashtags
+- Capítulos/temporalidades
+- Ideas de miniatura (copy + elementos visuales)
+- CTA (suscripción, comentarios, siguiente video)
+- Scripts para Shorts
 
-```bash
-# Build de producción
-ng build --configuration production
-
-# Build con optimizaciones
-ng build --optimization
-
-# Analizar bundle
-ng build --stats-json
-npm run bundle-analyzer
-```
-
-## 📊 Scripts Disponibles
-
-```bash
-npm run start          # ng serve
-npm run build          # ng build
-npm run test           # ng test
-npm run lint           # ng lint
-npm run e2e            # ng e2e
-npm run build:prod     # ng build --configuration production
-```
-
-## 🔍 Debugging
-
-### Herramientas de Desarrollo
-- **Angular DevTools**: Extensión del navegador
-- **Console Logging**: Logs detallados en auth service
-- **Network Tab**: Monitoreo de peticiones HTTP
-- **Lighthouse**: Auditoría de performance
-
-### Logs de Autenticación
-```typescript
-// Habilitar logs detallados
-console.log('🔐 Login attempt:', credentials);
-console.log('📡 Backend response:', response);
-console.log('🔑 Token received:', token);
-```
-
-## 🚨 Solución de Problemas
-
-### Error de Conexión Backend
-1. Verificar que el backend esté corriendo en puerto 8080
-2. Usar el botón "🔍 Probar Conexión Backend"
-3. Revisar configuración CORS en el backend
-4. Verificar logs de la consola del navegador
-
-### Error de Autenticación
-1. Verificar credenciales en el formulario
-2. Revisar logs del auth service
-3. Verificar que el backend esté funcionando
-4. Comprobar configuración de cookies
-
-### Problemas de Build
-1. Limpiar cache: `npm run clean`
-2. Reinstalar dependencias: `rm -rf node_modules && npm install`
-3. Verificar versión de Node.js: `node --version`
-4. Actualizar Angular CLI: `npm install -g @angular/cli@latest`
-
-## 📈 Performance
-
-### Optimizaciones Implementadas
-- **Lazy Loading**: Carga diferida de módulos
-- **OnPush Strategy**: Detección de cambios optimizada
-- **TrackBy Functions**: Optimización de listas
-- **Bundle Splitting**: Separación de código por rutas
-- **Tree Shaking**: Eliminación de código no utilizado
-
-### Métricas Objetivo
-- **First Contentful Paint**: < 1.5s
-- **Largest Contentful Paint**: < 2.5s
-- **Cumulative Layout Shift**: < 0.1
-- **First Input Delay**: < 100ms
-
-## 🔒 Seguridad
-
-### Implementaciones
-- **XSS Protection**: Sanitización de inputs
-- **CSRF Protection**: Tokens en formularios
-- **Content Security Policy**: Headers de seguridad
-- **HTTPS Only**: En producción
-- **Secure Cookies**: Configuración de cookies seguras
-
-## 📚 Documentación Adicional
-
-- [Angular Documentation](https://angular.io/docs)
-- [Angular Material](https://material.angular.io/)
-- [RxJS Documentation](https://rxjs.dev/)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-
-## 🤝 Contribución
-
-1. Fork del repositorio
-2. Crear rama feature: `git checkout -b feature/nueva-funcionalidad`
-3. Commit cambios: `git commit -m 'feat: agregar nueva funcionalidad'`
-4. Push a la rama: `git push origin feature/nueva-funcionalidad`
-5. Crear Pull Request
-
-## 📄 Licencia
-
-Este proyecto es privado y confidencial.
-
-## 👨‍💻 Autor
-
-**Alejandro** - Desarrollador Full Stack
-
-## 📞 Contacto
-
-- **Email**: alejandropsn27@gmail.com
-- **GitHub**: [@Biershoot](https://github.com/Biershoot)
+## 👤 Autor
+**Alejandro** — Desarrollador Full Stack
+- Email: alejandropsn27@gmail.com
+- GitHub: [@Biershoot](https://github.com/Biershoot)
 
 ---
 
-**¡Gracias por usar nuestro Generador de Prompts! 🚀✨**
+¡Crea prompts poderosos para tus videos de YouTube con Prompts Genius y acelera tu producción creativa! 🚀🎥
